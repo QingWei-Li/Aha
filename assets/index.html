@@ -6,7 +6,43 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/base.css">
 </head>
-<body></body>
-<script src="js/jquery.min.js"></script>
-<script src="js/signin.js"></script>
+<body>
+	<div class="container" id="signin">
+		<p>登录中...</p>
+	</div>
+	<div role="tabpanel" id="main" hidden>
+		<span id="money"></span>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation">
+				<a href="#auctions" aria-controls="auctions" role="tab" data-toggle="tab">
+					拍卖
+					<span class="label label-success">0</span>
+				</a>
+			</li>
+			<li role="presentation" class="active">
+				<a href="#create" aria-controls="create" role="tab" data-toggle="tab">出售</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane" id="auctions"></div>
+			<div role="tabpanel" class="tab-pane active" id="create">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>数量</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="https://www.battlenet.com.cn/wow/static/local-common/js/common-game-site.js?v=58-69"></script>
+	<script src="js/main.js"></script>
+	<script src="js/auction.js"></script>
+	<script src="js/create.js"></script>
 </html>

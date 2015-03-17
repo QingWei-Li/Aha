@@ -1,5 +1,8 @@
 {
-  "name": "Aha",
-  "main": "index.html",
-   "version": "0.0.1"
+	"window":{
+	  	"toolbar":false
+	  },
+	"name": "Aha",
+	"main": "index.html",
+	"version": "0.0.1"
 }
