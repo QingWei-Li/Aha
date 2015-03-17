@@ -4,25 +4,13 @@
 	<meta charset="UTF-8">
 	<title>Aha拍卖行助手 —— 地精科技震撼人心</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/base.css">
-</head>
+	<link rel="stylesheet" href="css/base.css"></head>
 <body>
 	<div class="container" id="signin">
 		<p>登录中...</p>
 	</div>
 	<div role="tabpanel" id="main" hidden>
-		<nav>
-			<span id="character">
-				<span class="name"></span>
-				<span class="realmName"></span>
-			</span>
-			<span id="money" class="pull-right">
-				<span class="icon-gold"></span>
-				<span class="icon-silver"></span>
-				<span class="icon-copper"></span>
-			</span>
-		</nav>
-		<ul class="nav nav-tabs" role="tablist">
+		<ul class="nav nav-tabs" role="tablist" hidden>
 			<li role="presentation">
 				<a href="#auctions" aria-controls="auctions" role="tab" data-toggle="tab">
 					拍卖
@@ -34,14 +22,18 @@
 			</li>
 		</ul>
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane" id="auctions"></div>
-			<div role="tabpanel" class="tab-pane active" id="create">
+			<div role="tabpanel" class="tab-pane fade" id="auctions"></div>
+			<div role="tabpanel" class="tab-pane fade in active" id="create">
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th><input type="checkbox"></th>
+							<th width="30px">
+								<input type="checkbox" id="cbAll"></th>
 							<th>名称</th>
 							<th>数量</th>
+							<th>市场最低价(个)</th>
+							<th>设定价格(个)</th>
+							<th>出售</th>
 						</tr>
 					</thead>
 					<tbody></tbody>
@@ -49,6 +41,17 @@
 			</div>
 		</div>
 	</div>
+	<footer>
+		<span id="character">
+			<span class="name"></span>
+			<span class="realmName"></span>
+		</span>
+		<span id="money" class="pull-right">
+			<span class="icon-gold"></span>
+			<span class="icon-silver"></span>
+			<span class="icon-copper"></span>
+		</span>
+	</footer>
 </body>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

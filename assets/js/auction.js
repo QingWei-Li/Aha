@@ -33,7 +33,7 @@ var Auction = {
 				if (data.AH)
 					Auction.faction = data.AH.toLowerCase();
 
-				Auction.update();
+				Auction.bind();
 			}
 		});
 	},
@@ -52,7 +52,7 @@ var Auction = {
 			copper: copper
 		};
 	},
-	update: function () {
+	bind: function () {
 		var amount = Auction.formatMoney(Auction.money);
 		$("#money .icon-gold").text(amount.gold);
 		$("#money .icon-silver").text(amount.silver);

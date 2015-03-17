@@ -25,20 +25,36 @@ var AuctionCreate = {
 				var re = /(AuctionCreate.*?[^)]+);/g;
 				eval(re.exec(datas)[1]);
 				$("a[href='#auctions'] span").text(res.getElementById('total-auctions').innerText);
-				AuctionCreate.update();
+				AuctionCreate.bind();
 			}
 		})
 	},
-	update: function () {
+	bind: function () {
 		var html = '';
 		var items = AuctionCreate.items;
 		for(item in items){
 			html += "<tr>";
-			html += "<td><input type='checkbox' name='item' data-id="+items[item].id+"/></td>";
+			html += "<td><input type='checkbox' name='item' data-id="+items[item].id+"></td>";
 			html += "<td><a data-id="+items[item].id+">"+items[item].name+"</a></td>";
 			html += "<td>"+AuctionCreate.items[item].q0+"</td>";
+			html += "<td>loading...</td>";
+			html += "<td><input type='text' /></td>";
+			html += "<td><button class='btn btn-sm btn-primary'>整组</button>&nbsp;<button class='btn btn-sm btn-success'>散装</button></td>";
 			html += "</tr>";
 		}
 		$("#create tbody").html(html);
+		AuctionCreate.chcekboxBind();
+	},
+	chcekboxBind: function () {
+		$("#cbAll").change(function () {
+			if(this.checked)
+				$("input[name='item']").each(function () {
+					this.checked = true;
+				});
+			else
+				$("input[name='item']").each(function () {
+					this.checked = false;
+				});
+		});
 	}
 }

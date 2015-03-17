@@ -18,6 +18,7 @@ body {
 .ui-tooltip h3 {
 	font-size: 16px;
 	font-weight: normal;
+	margin-top: 0;
 }
 
 .ui-tooltip ul,.ui-tooltip li {
@@ -103,7 +104,7 @@ body {
 .ui-tooltip .frame-56 { 
 	position: absolute; 
 	left: -75px; 
-	top: -30px; 
+	top: -10px; 
 }
 .icon-frame.frame-56 {
 	height: 56px;
@@ -132,4 +133,11 @@ body {
 
 .color-tooltip-gray {
 	color: #6D6E70 !important;
+}
+footer{
+	position: fixed;
+	bottom: 0;
+	background-color: #fff;
+	width: 100%;
+	padding: 0 30px;
 }
