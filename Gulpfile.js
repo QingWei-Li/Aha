@@ -25,4 +25,4 @@ gulp.task('nw', function () {
 gulp.task('watch',function () {
     gulp.watch('assets/**',['nw']);
 })
-gulp.task('default', ['nw','watch']);
+gulp.task('default', ['watch']);

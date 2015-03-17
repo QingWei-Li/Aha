@@ -1,41 +1,17 @@
 $(function () {
-	var loginUrl = "https://www.battlenet.com.cn/login/zh/";
-	var cookie;
+	if(localStorage.cookie.length>0){
+		window.document.cookie = localStorage.cookie;
+		return;
+	}
 
-	//demo data
-	$("#email").val("493628086@qq.com");
-	$("#password").val("Epeerror404");
-	var winLogin = win
-	$.ajax({
-		url: loginUrl,
-		success: function (res, status, xhr) {
-			var csrftoken = res.getElementById("csrftoken");
-			$("#step1").append(csrftoken);
-		},
-		error: function (err) {
-			console.log(err);
+	var win = window.open("https://www.battlenet.com.cn/login/zh/");
+	var interval = setInterval(function () {
+		if(win.location.href.indexOf("https://www.battlenet.com.cn/account/management/") == 0){
+			localStorage.cookie = win.document.cookie;
+			window.document.cookie = win.document.cookie;
+			clearInterval(interval);
+			win.close();
 		}
-	});
-
-	$("#step1").submit(function () {
-		$.ajax({
-			url: loginUrl,
-			method: "POST",
-			data: $("form").serialize(),
-			success: function (res, status, xhr) {
-				if(1){
-					console.log(res);
-					console.log(status);
-					console.log(xhr);
-				}else{
-					console.log("not found cookie");
-				}
-			},
-			error: function (err) {
-				console.log(err);
-			}
-		});
-		return false;
-	})
-});
-
+	},500);
+	
+})
