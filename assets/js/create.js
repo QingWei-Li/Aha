@@ -25,15 +25,16 @@ var AuctionCreate = {
 				var re = /(AuctionCreate.*?[^)]+);/g;
 				eval(re.exec(datas)[1]);
 				$("a[href='#auctions'] span").text(res.getElementById('total-auctions').innerText);
-				AuctionCreate.initData();
+				AuctionCreate.update();
 			}
 		})
 	},
-	initData: function () {
+	update: function () {
 		var html = '';
 		var items = AuctionCreate.items;
 		for(item in items){
 			html += "<tr>";
+			html += "<td><input type='checkbox' name='item' data-id="+items[item].id+"/></td>";
 			html += "<td><a data-id="+items[item].id+">"+items[item].name+"</a></td>";
 			html += "<td>"+AuctionCreate.items[item].q0+"</td>";
 			html += "</tr>";

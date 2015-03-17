@@ -24,7 +24,6 @@ var Auction = {
 			success: function(data) {
 				if (typeof data.money === "number") {
 					Auction.money = data.money;
-					Auction.updateMoney(data.money, false);
 				}
 
 				if (data.character) {
@@ -33,19 +32,10 @@ var Auction = {
 
 				if (data.AH)
 					Auction.faction = data.AH.toLowerCase();
+
+				Auction.update();
 			}
 		});
-	},
-	updateMoney: function(value, mode) {
-		if (mode)
-			value = (mode == '+') ? Math.round(Auction.money + value) : Math.round(Auction.money - value);
-
-		if (value < 0)
-			value = 0;
-
-		var amount = Auction.formatMoney(value);
-		$("#money").text(amount.gold+"金"+amount.silver+"银"+amount.copper+"铜");
-		Auction.money = value;
 	},
 	formatMoney: function(amount) {
 		var gold = Math.floor(amount / 10000);
@@ -61,5 +51,13 @@ var Auction = {
 			silver: silver,
 			copper: copper
 		};
+	},
+	update: function () {
+		var amount = Auction.formatMoney(Auction.money);
+		$("#money .icon-gold").text(amount.gold);
+		$("#money .icon-silver").text(amount.silver);
+		$("#money .icon-copper").text(amount.copper);
+		$("#character .name").text(Auction.character.name);
+		$("#character .realmName").text(Auction.character.realmName);
 	}
 }

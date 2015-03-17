@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 	<meta charset="UTF-8">
-	<title>Aha拍卖行助手——地精科技震撼人心</title>
+	<title>Aha拍卖行助手 —— 地精科技震撼人心</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/base.css">
 </head>
@@ -11,7 +11,17 @@
 		<p>登录中...</p>
 	</div>
 	<div role="tabpanel" id="main" hidden>
-		<span id="money"></span>
+		<nav>
+			<span id="character">
+				<span class="name"></span>
+				<span class="realmName"></span>
+			</span>
+			<span id="money" class="pull-right">
+				<span class="icon-gold"></span>
+				<span class="icon-silver"></span>
+				<span class="icon-copper"></span>
+			</span>
+		</nav>
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation">
 				<a href="#auctions" aria-controls="auctions" role="tab" data-toggle="tab">
@@ -29,6 +39,7 @@
 				<table class="table table-striped">
 					<thead>
 						<tr>
+							<th><input type="checkbox"></th>
 							<th>名称</th>
 							<th>数量</th>
 						</tr>
