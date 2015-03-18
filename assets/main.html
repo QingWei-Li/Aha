@@ -39,7 +39,7 @@
 							<th>名称</th>
 							<th>数量</th>
 							<th>市场最低价(个)</th>
-							<th>设定价格(个)</th>
+							<th>设定一口价(个)</th>
 							<th>出售</th>
 						</tr>
 					</thead>
@@ -48,7 +48,7 @@
 							<td>
 								<input type='checkbox' name='item' data-id="{{item.id}}"></td>
 							<td>
-								<a href="#" data-id="{{item.id}}">{{item.name}}</a>
+								<a href="#" data-id="{{item.id}}" class="item-q item-q{{item.quality}}">{{item.name}}</a>
 								<span hidden>{{item.pinyin}}</span>
 							</td>
 							<td>{{item.q0}}</td>

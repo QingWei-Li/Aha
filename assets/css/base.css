@@ -141,5 +141,24 @@ footer{
 	width: 100%;
 	padding: 0 30px;
 }
-#toolbar{
+.input-group .form-control {
+	z-index: 0;
 }
+/* item quality */
+.item-q{ font-weight: bold }
+.item-q0 { color: #9d9d9d } 
+.item-q1 { color: #333333 } 
+.item-q2 { color: #5cb85c } 
+.item-q3 { color: #0081ff } 
+.item-q4 { color: #c600ff } 
+.item-q5 { color: #ff8000 } 
+.item-q6 { color: #F0AD4E } 
+.item-q7 { color: #F0AD4E } 
+.color-q0 { color: #9d9d9d !important; } /* poor (gray) */
+.color-q1 { color: #ffffff !important; } /* common (white) */
+.color-q2 { color: #1eff00 !important; } /* uncommon (green) */
+.color-q3 { color: #0081ff !important; } /* #0070dd rare (blue) */
+.color-q4 { color: #c600ff !important; } /* #a335ee epic (purple) */
+.color-q5 { color: #ff8000 !important; } /* lengendary (orange) */
+.color-q6 { color: #e5cc80 !important; } /* artifact (gold) */
+.color-q7 { color: #e5cc80 !important; } /* heirloom (gold) */

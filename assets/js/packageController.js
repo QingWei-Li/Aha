@@ -46,7 +46,7 @@ mainApp.controller("packageController", function ($scope) {
 		},
 		toPinYin: function () {
 			for (var i = 0; i < Model.items.length; i++) {
-				Model.items[i].pinyin = PinYin.to(Model.items[i].name);
+				Model.items[i].pinyin = Model.items[i].name + PinYin.to(Model.items[i].name);
 			};
 		},
 		updateDeposit: function () {
