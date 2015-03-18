@@ -11,7 +11,7 @@ Model = {
 	/**
     * Cache of all the items in the inventory.
     */
-    items: {},
+    items: [],
     init:function () {
     	if(localStorage.items)
     		Model.items = JSON.parse(localStorage.items);

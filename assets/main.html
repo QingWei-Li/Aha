@@ -4,8 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Aha拍卖行助手 —— 地精科技震撼人心</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/base.css">
-</head>
+	<link rel="stylesheet" href="css/base.css"></head>
 <body ng-app="mainApp" ng-controller="mainController">
 	<div role="tabpanel" id="main">
 		<ul class="nav nav-tabs" role="tablist" hidden>
@@ -17,6 +16,19 @@
 			</li>
 		</ul>
 		<div class="tab-content">
+			<div class="container-fluid" id="toolbar">
+				<div class="row">
+					<div class="col-xs-8"></div>
+					<div class="col-xs-4">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-model="search" placeholder="商品搜索" aria-describedby="desc-search">
+							<span class="input-group-addon" id="desc-search">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="auctions"></div>
 			<div role="tabpanel" ng-controller="packageController" class="tab-pane fade in active" id="create">
 				<table class="table table-striped">
@@ -32,13 +44,22 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="item in items">
-							<td><input type='checkbox' name='item' data-id="{{item.id}}"></td>
-							<td><a href="#" data-id="{{item.id}}">{{item.name}}</a></td>
+						<tr ng-repeat="item in items | filter:{'pinyin':search}">
+							<td>
+								<input type='checkbox' name='item' data-id="{{item.id}}"></td>
+							<td>
+								<a href="#" data-id="{{item.id}}">{{item.name}}</a>
+								<span hidden>{{item.pinyin}}</span>
+							</td>
 							<td>{{item.q0}}</td>
 							<td>loading...</td>
-							<td><input type="text"></td>
-							<td><button class='btn btn-sm btn-primary'>整组</button>&nbsp;<button class='btn btn-sm btn-success'>散装</button></td>
+							<td>
+								<input type="text"></td>
+							<td>
+								<button class='btn btn-sm btn-primary'>整组</button>
+								&nbsp;
+								<button class='btn btn-sm btn-success'>散装</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -59,6 +80,7 @@
 </body>
 	<script src="js/dist/jquery.min.js"></script>
 	<script src="js/dist/bootstrap.min.js"></script>
+	<script src="js/PinYin.js"></script>
 	<script src="js/dist/angular.min.js"></script>
 	<script src="js/model.js"></script>
 	<script src="js/mainApp.js"></script>

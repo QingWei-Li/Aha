@@ -1,4 +1,7 @@
 {
+	"window":{
+		"toolbar":false
+	},
 	"name": "Aha",
 	"main": "main.html",
 	"version": "0.0.1"

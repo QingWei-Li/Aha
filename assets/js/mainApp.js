@@ -1,5 +1,10 @@
 var mainApp = angular.module("mainApp", []);
 
+mainApp.filter('filterSearch', function () {
+	return function (input) {
+		return input;
+	}
+})
 var Msg = Msg || {};
 var Core = Core || {};
 $(function () {
