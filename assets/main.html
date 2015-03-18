@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>Aha拍卖行助手 —— 地精科技震撼人心</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/base.css">
+</head>
+<body ng-app="mainApp" ng-controller="mainController">
+	<div role="tabpanel" id="main">
+		<ul class="nav nav-tabs" role="tablist" hidden>
+			<li role="presentation">
+				<a href="#auctions" aria-controls="auctions" role="tab" data-toggle="tab">拍卖</a>
+			</li>
+			<li role="presentation" class="active">
+				<a href="#create" aria-controls="create" role="tab" data-toggle="tab">出售</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="auctions"></div>
+			<div role="tabpanel" ng-controller="packageController" class="tab-pane fade in active" id="create">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th width="30px">
+								<input type="checkbox" id="cbAll"></th>
+							<th>名称</th>
+							<th>数量</th>
+							<th>市场最低价(个)</th>
+							<th>设定价格(个)</th>
+							<th>出售</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in items">
+							<td><input type='checkbox' name='item' data-id="{{item.id}}"></td>
+							<td><a href="#" data-id="{{item.id}}">{{item.name}}</a></td>
+							<td>{{item.q0}}</td>
+							<td>loading...</td>
+							<td><input type="text"></td>
+							<td><button class='btn btn-sm btn-primary'>整组</button>&nbsp;<button class='btn btn-sm btn-success'>散装</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<span>
+			<span class="name">{{character.name || '角色名'}}</span>
+			<span class="realmName">{{character.realmName || '服务器'}}</span>
+		</span>
+		<span class="pull-right">
+			<span class="icon-gold">{{money.gold || 0}}</span>
+			<span class="icon-silver">{{money.silver || 0}}</span>
+			<span class="icon-copper">{{money.copper || 0}}</span>
+		</span>
+	</footer>
+</body>
+	<script src="js/dist/jquery.min.js"></script>
+	<script src="js/dist/bootstrap.min.js"></script>
+	<script src="js/dist/angular.min.js"></script>
+	<script src="js/model.js"></script>
+	<script src="js/mainApp.js"></script>
+	<script src="js/mainController.js"></script>
+	<script src="js/onsellController.js"></script>
+	<script src="js/packageController.js"></script>
+	<script src="js/win.js"></script>
+	<script src="https://www.battlenet.com.cn/wow/static/local-common/js/common-game-site.js?v=58-69"></script>
+</html>
