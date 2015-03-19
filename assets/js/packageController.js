@@ -25,30 +25,13 @@ mainApp.controller("packageController", function ($scope) {
 						.replace(/}(.*)$/g,"]$1")
 						.replace(/('[^:]+:.*){/g,"{")
 						);
-					Package.toPinYin();
+					Main.toPinYin();
 					Model.bind();
 					$scope.$apply(function () {
 						$scope.gridData = Model.gridData;
 					})
 				}
 			})
-		},
-		chcekboxBind: function () {
-			$("#cbAll").change(function () {
-				if(this.checked)
-					$("input[name='item']").each(function () {
-						this.checked = true;
-					});
-				else
-					$("input[name='item']").each(function () {
-						this.checked = false;
-					});
-			});
-		},
-		toPinYin: function () {
-			for (var i = 0; i < Model.items.length; i++) {
-				Model.items[i].pinyin = PinYin.to(Model.items[i].name);
-			};
 		},
 		updateDeposit: function () {
 			update = update !== false;

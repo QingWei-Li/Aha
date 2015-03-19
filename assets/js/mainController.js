@@ -1,15 +1,21 @@
 var Main = {};
 mainApp.controller("mainController", function ($scope) {
+	var moneyTemplate = '<div class="ngCellText colt{{$index}}">'+
+							'<span class="icon-gold">{{row.getProperty(col.field).substr(0,row.getProperty(col.field).length-4) || 0}}</span>'+
+							'<span class="icon-silver">{{row.getProperty(col.field).substr(row.getProperty(col.field).length-4,2) || 0}}</span>'+
+							'<span class="icon-copper">{{row.getProperty(col.field).substr(row.getProperty(col.field).length-2,2) || 0}}</span>'+
+						'</div>';
 	$scope.grid = {
 		data: 'gridData',
         enableColumnResize:true,
         showSelectionCheckbox:true,
+        enableCellEditOnFocus: true,
 		showFilter: true,
 		columnDefs: [
 			{field: "name", displayName: "名称", width: "**", cellTemplate: "<a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a>"},
 			{field: "quality", displayName: "数量", width:'auto'},
-			{field: "similar", displayName: "最低价(个)"},
-			{field: "buyout", displayName: "一口价(个)"},
+			{field: "similar", displayName: "市场最低价(个)", width: "**", cellTemplate: moneyTemplate},
+			{field: "buyout", displayName: "一口价(个)", width: "**", enableCellEdit: true, cellTemplate: moneyTemplate},
 			{field: "type", displayName: "方式"},
 			{field: "quantity", displayName: "堆叠数量"},
 			{field: "stacks", displayName: "堆叠组数"}
@@ -45,6 +51,32 @@ mainApp.controller("mainController", function ($scope) {
 				gold: gold,
 				silver: silver,
 				copper: copper
+			};
+		},
+		similar: function (id) {
+			$.ajax({
+				url: Main.url('similar'),
+				dataType: 'html',
+				cache: false,
+				data: {
+					sort: 'unitBuyout',
+					itemId: id
+				},
+				success: function (res) {
+					var html = res.getElementsByClassName('price')[0];
+					html = html.getElementsByTagName('span');
+					/*return {
+						gold: html[0] || 0,
+						silver: html[1] || 0,
+						copper: html[2] || 0
+					};*/
+					return html.join('');
+				}
+			});
+		},
+		toPinYin: function () {
+			for (var i = 0; i < Model.items.length; i++) {
+				Model.items[i].pinyin = PinYin.to(Model.items[i].name);
 			};
 		},
 		bind: function () {
