@@ -175,3 +175,7 @@ footer{
 	position: fixed;
     height: 100%;
 }
+
+#status{
+	margin-right: 30px;
+}

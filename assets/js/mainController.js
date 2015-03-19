@@ -9,7 +9,6 @@ mainApp.controller("mainController", function ($scope) {
 		data: 'gridData',
         enableColumnResize:true,
         showSelectionCheckbox:true,
-        enableCellEditOnFocus: true,
 		showFilter: true,
 		columnDefs: [
 			{field: "name", displayName: "名称", width: "**", cellTemplate: "<a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a>"},
@@ -24,6 +23,7 @@ mainApp.controller("mainController", function ($scope) {
 	Main = {
 		init: function () {
 			Main.load();
+			Main.similar(null, 0);
 		},
 		url: function (url) {
 			return Core.baseUrl+"vault/character/auction/"+url;
@@ -53,7 +53,11 @@ mainApp.controller("mainController", function ($scope) {
 				copper: copper
 			};
 		},
-		similar: function (id) {
+		similar: function (id, index) {
+			var similar = "";
+			if(index >= Model.gridData.length) return;
+			id = id || Model.gridData[index].name.id;
+
 			$.ajax({
 				url: Main.url('similar'),
 				dataType: 'html',
@@ -63,15 +67,21 @@ mainApp.controller("mainController", function ($scope) {
 					itemId: id
 				},
 				success: function (res) {
-					var html = res.getElementsByClassName('price')[0];
-					html = html.getElementsByTagName('span');
-					/*return {
-						gold: html[0] || 0,
-						silver: html[1] || 0,
-						copper: html[2] || 0
-					};*/
-					return html.join('');
-				}
+					var re = /gold\D+(\d+)\D+(\d+)\D+(\d+)/g;
+					var html = re.exec(res) || ["00","00","00","00"];
+					for (var i = 1; i < html.length; i++) {
+						if(html[i].length<2){
+							html[i] = "0" + html[i];
+						}
+						similar += html[i];
+					};
+					console.log(similar);
+					Model.gridData[index].similar = similar;
+					Main.bind();
+					setTimeout(function () {
+						Main.similar(null, index+1);
+					}, 500);
+				},
 			});
 		},
 		toPinYin: function () {

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Aha拍卖行助手 —— 地精科技震撼人心</title>
-    <link rel="stylesheet" href="css/ng-grid.css" />
+	<link rel="stylesheet" href="css/ng-grid.css" />
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/base.css"></head>
 <body ng-app="mainApp" ng-controller="mainController">
@@ -25,43 +25,7 @@
 			</div>
 			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="auctions"></div>
 			<div role="tabpanel" ng-controller="packageController"  class="tab-pane fade in active" id="create">
-				<!-- <table class="table table-striped">
-					<thead>
-						<tr>
-							<th width="30px">
-								<input type="checkbox" id="cbAll"></th>
-							<th>名称</th>
-							<th>数量</th>
-							<th>市场最低价(个)</th>
-							<th>设定一口价(个)</th>
-							<th>出售</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="item in items | filter:{'pinyin':search}">
-							<td>
-								<input type='checkbox' name='item' data-id="{{item.id}}"></td>
-							<td>
-								<a href="#" data-id="{{item.id}}" class="item-q item-q{{item.quality}}">{{item.name}}</a>
-								<span hidden>{{item.pinyin}}</span>
-							</td>
-							<td>{{item.q0}}</td>
-							<td>
-								<span class="icon-gold">{{item.money.gold || 0}}</span>
-								<span class="icon-silver">{{item.money.silver || 0}}</span>
-								<span class="icon-copper">{{item.money.copper || 0}}</span>
-							</td>
-							<td>
-								<input type="text"></td>
-							<td>
-								<button class='btn btn-sm btn-primary'>整组</button>
-								&nbsp;
-								<button class='btn btn-sm btn-success'>散装</button>
-							</td>
-						</tr>
-					</tbody>
-				</table> -->
-				 <div class="gridStyle" ng-grid="grid"></div>
+				<div class="gridStyle" ng-grid="grid"></div>
 			</div>
 		</div>
 	</div>
@@ -75,6 +39,7 @@
 			<span class="icon-silver">{{money.silver || 0}}</span>
 			<span class="icon-copper">{{money.copper || 0}}</span>
 		</span>
+		<span id="status" class="pull-right">{{status}}</span>
 	</footer>
 </body>
 	<script src="js/libs/jquery.min.js"></script>
