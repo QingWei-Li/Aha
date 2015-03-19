@@ -36,7 +36,7 @@ mainApp.controller("mainController", function ($scope) {
 			$scope.$apply(function () {
 				$scope.money = Model.money;
 				$scope.character = Model.character;
-				$scope.items = Model.items;
+				$scope.items = {data: Model.items};
 			})
 		}
 	}

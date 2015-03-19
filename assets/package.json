@@ -1,6 +1,6 @@
 {
 	"window":{
-		"toolbar":true
+		"toolbar":false
 	},
 	"name": "Aha",
 	"main": "main.html",

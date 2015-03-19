@@ -48,6 +48,11 @@ $(function () {
 		},
 		mainWin: function () {
 			var mainWin = Win.gui.Window.get();
+			
+			//open the debug window
+			var devTools = mainWin.showDevTools();
+			devTools.moveBy(500,0);
+
 			mainWin.on('close', function() {
 			    this.hide();
 			    if (loginWin != null)

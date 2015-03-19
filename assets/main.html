@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="auctions"></div>
-			<div role="tabpanel" ng-controller="packageController" class="tab-pane fade in active" id="create">
+			<div role="tabpanel" ng-controller="packageController"  class="tab-pane fade in active" id="create">
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -44,22 +44,26 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="item in items | filter:{'pinyin':search}">
-							<td>
+						<tr ng-grid="items">
+							<!-- <td>
 								<input type='checkbox' name='item' data-id="{{item.id}}"></td>
 							<td>
 								<a href="#" data-id="{{item.id}}" class="item-q item-q{{item.quality}}">{{item.name}}</a>
 								<span hidden>{{item.pinyin}}</span>
 							</td>
 							<td>{{item.q0}}</td>
-							<td>loading...</td>
+							<td>
+								<span class="icon-gold">{{item.money.gold || 0}}</span>
+								<span class="icon-silver">{{item.money.silver || 0}}</span>
+								<span class="icon-copper">{{item.money.copper || 0}}</span>
+							</td>
 							<td>
 								<input type="text"></td>
 							<td>
 								<button class='btn btn-sm btn-primary'>整组</button>
 								&nbsp;
 								<button class='btn btn-sm btn-success'>散装</button>
-							</td>
+							</td> -->
 						</tr>
 					</tbody>
 				</table>
@@ -78,10 +82,11 @@
 		</span>
 	</footer>
 </body>
-	<script src="js/dist/jquery.min.js"></script>
-	<script src="js/dist/bootstrap.min.js"></script>
-	<script src="js/PinYin.js"></script>
-	<script src="js/dist/angular.min.js"></script>
+	<script src="js/libs/jquery.min.js"></script>
+	<script src="js/libs/bootstrap.min.js"></script>
+	<script src="js/libs/PinYin.js"></script>
+	<script src="js/libs/angular.min.js"></script>
+	<script src="js/libs/ng-grid.min.js"></script>
 	<script src="js/model.js"></script>
 	<script src="js/mainApp.js"></script>
 	<script src="js/mainController.js"></script>

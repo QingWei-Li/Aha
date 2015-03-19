@@ -1,4 +1,4 @@
-var mainApp = angular.module("mainApp", []);
+var mainApp = angular.module("mainApp", ["ngGrid"]);
 
 mainApp.filter('filterSearch', function () {
 	return function (input) {

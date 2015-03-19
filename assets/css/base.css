@@ -144,6 +144,12 @@ footer{
 .input-group .form-control {
 	z-index: 0;
 }
+.tab-pane{
+	overflow: scroll;
+	position: fixed;
+  	width: 100%;
+  	height: 100%;
+}
 /* item quality */
 .item-q{ font-weight: bold }
 .item-q0 { color: #9d9d9d } 
