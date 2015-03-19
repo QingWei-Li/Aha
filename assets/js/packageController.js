@@ -28,7 +28,7 @@ mainApp.controller("packageController", function ($scope) {
 					Package.toPinYin();
 					Model.bind();
 					$scope.$apply(function () {
-						$scope.items = Model.gridData;
+						$scope.gridData = Model.gridData;
 					})
 				}
 			})

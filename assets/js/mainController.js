@@ -6,13 +6,13 @@ mainApp.controller("mainController", function ($scope) {
         showSelectionCheckbox:true,
 		showFilter: true,
 		columnDefs: [
-			{field: "name", displayName: "名称", width: "**", cellTemplate: "<div>{{row.entity[col.field]}}</div>"},
-			{field: "q0", displayName: "数量", width:'auto'},
-			{displayName: "最低价(个)"},
-			{displayName: "一口价(个)"},
-			{displayName: "方式"},
-			{displayName: "堆叠数量"},
-			{displayName: "堆叠组数"}
+			{field: "name", displayName: "名称", width: "**", cellTemplate: "<a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a>"},
+			{field: "quality", displayName: "数量", width:'auto'},
+			{field: "similar", displayName: "最低价(个)"},
+			{field: "buyout", displayName: "一口价(个)"},
+			{field: "type", displayName: "方式"},
+			{field: "quantity", displayName: "堆叠数量"},
+			{field: "stacks", displayName: "堆叠组数"}
 		]
 	};
 	Main = {

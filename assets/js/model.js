@@ -16,7 +16,15 @@ Model = {
     bind: function () {
         Model.gridData = [];
         for(x in Model.items){
-            Model.gridData.push(Model.items[x]);
+            Model.gridData.push({
+                name: {
+                    title: Model.items[x].name,
+                    id: Model.items[x].id,
+                    q: Model.items[x].quality
+                },
+                quality: Model.items[x].q0,
+                pinyin: Model.items[x].pinyin
+            });
         }
     },
     init:function () {
