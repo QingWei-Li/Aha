@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Aha拍卖行助手 —— 地精科技震撼人心</title>
+    <link rel="stylesheet" href="css/ng-grid.css" />
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/base.css"></head>
 <body ng-app="mainApp" ng-controller="mainController">
@@ -19,19 +20,12 @@
 			<div class="container-fluid" id="toolbar">
 				<div class="row">
 					<div class="col-xs-8"></div>
-					<div class="col-xs-4">
-						<div class="input-group">
-							<input type="text" class="form-control" ng-model="search" placeholder="商品搜索" aria-describedby="desc-search">
-							<span class="input-group-addon" id="desc-search">
-								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-							</span>
-						</div>
-					</div>
+					<div class="col-xs-4"></div>
 				</div>
 			</div>
 			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="auctions"></div>
 			<div role="tabpanel" ng-controller="packageController"  class="tab-pane fade in active" id="create">
-				<table class="table table-striped">
+				<!-- <table class="table table-striped">
 					<thead>
 						<tr>
 							<th width="30px">
@@ -44,8 +38,8 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-grid="items">
-							<!-- <td>
+						<tr ng-repeat="item in items | filter:{'pinyin':search}">
+							<td>
 								<input type='checkbox' name='item' data-id="{{item.id}}"></td>
 							<td>
 								<a href="#" data-id="{{item.id}}" class="item-q item-q{{item.quality}}">{{item.name}}</a>
@@ -63,10 +57,11 @@
 								<button class='btn btn-sm btn-primary'>整组</button>
 								&nbsp;
 								<button class='btn btn-sm btn-success'>散装</button>
-							</td> -->
+							</td>
 						</tr>
 					</tbody>
-				</table>
+				</table> -->
+				 <div class="gridStyle" ng-grid="grid"></div>
 			</div>
 		</div>
 	</div>

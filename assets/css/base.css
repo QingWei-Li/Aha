@@ -145,10 +145,10 @@ footer{
 	z-index: 0;
 }
 .tab-pane{
-	overflow: scroll;
+	/* overflow: scroll;
 	position: fixed;
-  	width: 100%;
-  	height: 100%;
+	  	width: 100%;
+	  	height: 100%; */
 }
 /* item quality */
 .item-q{ font-weight: bold }
@@ -168,3 +168,10 @@ footer{
 .color-q5 { color: #ff8000 !important; } /* lengendary (orange) */
 .color-q6 { color: #e5cc80 !important; } /* artifact (gold) */
 .color-q7 { color: #e5cc80 !important; } /* heirloom (gold) */
+
+.gridStyle{
+	border: 1px solid rgb(212,212,212);
+    width: 100%; 
+	position: fixed;
+    height: 100%;
+}

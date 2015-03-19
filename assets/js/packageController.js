@@ -10,7 +10,7 @@ mainApp.controller("packageController", function ($scope) {
 					Tooltip.show(event.target, '/item/' + id + '/tooltip', true);
 				}
 			});
-			Package.chcekboxBind();
+			//Package.chcekboxBind();
 		},
 		load: function () {
 			//if u're using '$http' will be able to get the data, I don't know why
@@ -26,8 +26,9 @@ mainApp.controller("packageController", function ($scope) {
 						.replace(/('[^:]+:.*){/g,"{")
 						);
 					Package.toPinYin();
+					Model.bind();
 					$scope.$apply(function () {
-						$scope.items = Model.items;
+						$scope.items = Model.gridData;
 					})
 				}
 			})
@@ -46,7 +47,7 @@ mainApp.controller("packageController", function ($scope) {
 		},
 		toPinYin: function () {
 			for (var i = 0; i < Model.items.length; i++) {
-				Model.items[i].pinyin = Model.items[i].name + PinYin.to(Model.items[i].name);
+				Model.items[i].pinyin = PinYin.to(Model.items[i].name);
 			};
 		},
 		updateDeposit: function () {
