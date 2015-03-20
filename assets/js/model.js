@@ -12,11 +12,15 @@ Model = {
     * Cache of all the items in the inventory.
     */
     items: [],
+    /**
+    * display in the grid
+    */
     gridData:[],
+    selectedItems:[],
     config: {
         spread: 1,
         homePage: "package",
-        updateSimilar: true
+        updateSimilar: false
     },
     store: function () {
         Model.gridData = [];

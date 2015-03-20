@@ -171,9 +171,6 @@ footer{
 label{
 	font-weight: normal;
 }
-.cell-content{
-	padding-left: 5px;
-}
 #toolbar{
-	margin: 5px -20px;
+	margin: 5px -10px;
 }
