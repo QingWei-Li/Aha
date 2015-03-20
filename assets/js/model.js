@@ -13,6 +13,11 @@ Model = {
     */
     items: [],
     gridData:[],
+    config: {
+        spread: 1,
+        homePage: "package",
+        updateSimilar: true
+    },
     store: function () {
         Model.gridData = [];
         for(x in Model.items){

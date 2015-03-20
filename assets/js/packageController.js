@@ -18,23 +18,25 @@ mainApp.controller("packageController", function ($scope) {
 				success: function (res) {
 					var datas = res.getElementById("inventories").innerHTML;
 					var re = /(AuctionCreate.items*?[^)]+);/g;
-					eval(re.exec(datas)[0]
-						.replace("AuctionCreate","Model")
-						.replace(/=.*{/g,"=[")
-						.replace(/}(.*)$/g,"]$1")
-						.replace(/('[^:]+:.*){/g,"{")
-						);
+					eval(re.exec(datas)[0].replace("AuctionCreate","Model"));
 					Model.store();
 					Main.bind();
 				},
 				error: function (err) {
-					console.log(err);
+					if(confirm("网络异常，请重新打开。点击确定将退出程序")){
+						var gui = require('nw.gui');
+						gui.Window.get().close(true);
+					}
 				},
 				beforeSend: function () {
 					Main.status("商品列表更新中...");
 				},
 				complete: function () {
-					Main.similar(null, 0, false);
+					if(Model.config.updateSimilar){
+						Main.similar(null, 0, false);
+					}else{
+						Main.status();
+					}
 				}
 			})
 		},

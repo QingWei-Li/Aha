@@ -14,7 +14,7 @@ mainApp.controller("mainController", function ($scope) {
 			{field: "name", displayName: "名称", width: "**", cellTemplate: "<a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a>"},
 			{field: "quality", displayName: "数量", width:'auto'},
 			{field: "similar", displayName: "市场最低价(个)", width: "**", cellTemplate: moneyTemplate},
-			{field: "buyout", displayName: "一口价(个)", width: "**", enableCellEdit: true, cellTemplate: moneyTemplate},
+			{field: "buyout", displayName: "设置一口价(个)", width: "**", enableCellEdit: true, cellTemplate: moneyTemplate},
 			{field: "type", displayName: "方式"},
 			{field: "quantity", displayName: "堆叠数量"},
 			{field: "stacks", displayName: "堆叠组数"}
@@ -23,7 +23,11 @@ mainApp.controller("mainController", function ($scope) {
 	Main = {
 		init: function () {
 			Main.load();
-			Package.init();
+			if(Model.config.homePage === "package"){
+				Package.init();
+			}else if(Model.config.homePage === "onsell"){
+				OnSell.init();
+			}
 		},
 		url: function (url) {
 			return Core.baseUrl+"vault/character/auction/"+url;
@@ -83,6 +87,7 @@ mainApp.controller("mainController", function ($scope) {
 						similar += html[i];
 					};
 					Model.gridData[index].similar = similar;
+					Model.gridData[index].buyout = Main.initPrice(similar);
 					Main.bind();
 					setTimeout(function () {
 						Main.similar(null, index+1, false);
@@ -92,6 +97,13 @@ mainApp.controller("mainController", function ($scope) {
 					Main.status("价格查询中("+(index+1)+"/"+Model.gridData.length+")...");
 				}
 			});
+		},
+		initPrice: function (similar) {
+			//from config
+			var spread = Model.config.spread || 0;
+			var price = parseInt(similar) - spread;
+			price = price<0?0:price;
+			return price.toString();
 		},
 		bind: function () {
 			$scope.$apply(function () {
