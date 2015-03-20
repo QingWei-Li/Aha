@@ -1,9 +1,9 @@
 var Main = {};
 mainApp.controller("mainController", function ($scope) {
 	var moneyTemplate = '<div class="ngCellText colt{{$index}}">'+
-							'<span class="icon-gold">{{row.getProperty(col.field).substr(0,row.getProperty(col.field).length-4) || 0}}</span>'+
-							'<span class="icon-silver">{{row.getProperty(col.field).substr(row.getProperty(col.field).length-4,2) || 0}}</span>'+
-							'<span class="icon-copper">{{row.getProperty(col.field).substr(row.getProperty(col.field).length-2,2) || 0}}</span>'+
+							'<span class="icon-gold">{{row.getProperty(col.field).gold}}</span>'+
+							'<span class="icon-silver">{{row.getProperty(col.field).silver}}</span>'+
+							'<span class="icon-copper">{{row.getProperty(col.field).copper}}</span>'+
 						'</div>';
 	var cellTemplate = function (str) {
 		return  "<div class='ngCellText text-center' ng-class='col.colIndex()'><span ng-cell-text>"+str+"</span></div>";
@@ -28,6 +28,11 @@ mainApp.controller("mainController", function ($scope) {
 		]
 		
 	};
+	//todo 价格显示问题，应该是数字类型，用对象表示，但是如果改了值就要监听到才可以，关键是如何监听
+	 $scope.$on('ngGridEventEndCellEdit', function (evt) {
+                var item = evt.targetScope.row.entity;
+            });
+
 	Main = {
 		init: function () {
 			Main.load();
@@ -72,7 +77,6 @@ mainApp.controller("mainController", function ($scope) {
 			};
 		},
 		similar: function (id, index, cache) {
-			var similar = "";
 			if(index >= Model.gridData.length) {
 				$("#refresh").removeAttr("disabled");
 				return Main.status();
@@ -89,18 +93,30 @@ mainApp.controller("mainController", function ($scope) {
 				},
 				success: function (res) {
 					var re = /gold\D+([\d,]+)\D+(\d+)\D+(\d+)/g;
-					var html = re.exec(res) || ["00","00","00","00"];
-					
-					if(html[1].indexOf(',')>-1) html[1] = html[1].replace(",","");
-					for (var i = 1; i < html.length; i++) {
+					var html = re.exec(res) || [0,0,0,0];
+					html.shift();
+					if(html[0].indexOf && html[0].indexOf(',')>-0) html[0] = html[0].replace(",","");
+					/*for (var i = 1; i < html.length; i++) {
 						if(html[i].length<2){
 							html[i] = "0" + html[i];
 						}
 						similar += html[i];
+					};*/
+
+					//todo 数字小于两位要补全
+					var similar = {
+						gold: parseInt(html[0]) || 0,
+						silver: parseInt(html[1]) || 0,
+						copper: parseInt(html[2]) || 0,
+						amount: parseInt(html.join('')) || 0 
 					};
 					Model.gridData[index].similar = similar;
-					Model.gridData[index].buyout = Main.initPrice(similar);
+					Model.gridData[index].buyout = Main.initPrice(similar.amount);
+					console.log(similar);
+					console.log(Main.initPrice(similar.amount));
+
 					Main.bind();
+
 					setTimeout(function () {
 						Main.similar(null, index+1, false);
 					}, 500);
@@ -110,12 +126,11 @@ mainApp.controller("mainController", function ($scope) {
 				}
 			});
 		},
-		initPrice: function (similar) {
-			//from config
+		initPrice: function (amount) {
 			var spread = Model.config.spread || 0;
-			var price = parseInt(similar) - spread;
-			price = price<0?0:price;
-			return price.toString();
+			amount = amount - spread;
+			amount = amount?amount:0;
+			return Main.formatMoney(amount);
 		},
 		bind: function () {
 			$scope.$apply(function () {
@@ -132,8 +147,8 @@ mainApp.controller("mainController", function ($scope) {
 		},
 		sell: function (index) {
 			if(index >= Model.selectedItems.length) return;
-			//todo
 			var item = Model.selectedItems[index];
+			
 			Main.deposit(item, function () {
 				$.ajax({
 					url: Main.url('createAuction'),
@@ -152,7 +167,7 @@ mainApp.controller("mainController", function ($scope) {
 					dataType: 'json',
 					type: 'POST',
 					success: function (data) {
-						//todo
+						Main.status("出售中("+(index+1)+"/"+Model.selectedItems.length+")...");
 					}
 				});
 			});
@@ -184,10 +199,9 @@ mainApp.controller("mainController", function ($scope) {
 					if (Model.money.amount < data.deposit.deposit) {
 						//todo 钱不够了
 						return;
-					} else {
-						item.ticket = data.ticket;
-					}
+					} 
 
+					item.ticket = data.ticket;
 					callback();
 				}
 			});
