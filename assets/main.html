@@ -20,8 +20,23 @@
 			<div class="container-fluid">
 				<div class="row" id="toolbar">
 					<button type="button" class="btn btn-success btn-sm">出售</button>
-					<button type="button" class="btn btn-info btn-sm pull-right">刷新</button>
-				</div>
+					<button type="button" class="btn btn-info btn-sm">刷新</button>
+				</div> 
+				<!-- 作用域问题，自定义的搜索框用不了，以后再想方法
+				<div class="row" id="toolbar">
+					<div class="col-xs-8">
+						<button type="button" class="btn btn-success btn-sm">出售</button>
+						<button type="button" class="btn btn-info btn-sm">刷新</button>
+					</div>
+					<div class="col-xs-4">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-model="filterText" placeholder="商品搜索" aria-describedby="desc-search">
+							<span class="input-group-addon" id="desc-search">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</span>
+						</div>
+					</div>
+				</div> -->
 			</div>
 			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="auctions"></div>
 			<div role="tabpanel" ng-controller="packageController"  class="tab-pane fade in active" id="create">

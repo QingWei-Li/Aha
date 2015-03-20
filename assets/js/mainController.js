@@ -9,6 +9,7 @@ mainApp.controller("mainController", function ($scope) {
 		data: 'gridData',
         enableColumnResize:true,
         showSelectionCheckbox:true,
+        i18n: 'zh-cn',
 		showFilter: true,
 		columnDefs: [
 			{field: "name", displayName: "名称", width: "**", cellTemplate: "<a class='cell-content item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a>"},
