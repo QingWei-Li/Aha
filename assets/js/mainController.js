@@ -22,7 +22,7 @@ mainApp.controller("mainController", function ($scope) {
 			{field: "quality", displayName: "数量", width:'auto'},
 			{field: "similar", displayName: "市场最低价(个)", width: "**", cellTemplate: moneyTemplate},
 			{field: "buyout", displayName: "设置一口价(个)", width: "**", enableCellEdit: true, cellTemplate: moneyTemplate, editableCellTemplate: editableCellTemplate},
-			{field: "name.id", displayName: "方式", cellTemplate: cellTemplate('<label><input name="type-{{row.getProperty(col.field)}}" type="radio" value="group"/>组</label>&nbsp;<label><input name="type-{{row.getProperty(col.field)}}" type="radio" value="single" checked="checked"/>个</label>')},
+			{field: "type", displayName: "方式(0:个,1:组)", width: "110", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 0}}'), editableCellTemplate: '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" min="0" max="1"/>'},
 			{field: "quantity", displayName: "堆叠数量", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), editableCellTemplate: editableCellTemplate},
 			{field: "stacks", displayName: "堆叠组数", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), editableCellTemplate: editableCellTemplate}
 		]
@@ -133,13 +133,35 @@ mainApp.controller("mainController", function ($scope) {
 		sell: function (index) {
 			if(index >= Model.selectedItems.length) return;
 			//todo
-			Main.deposit(Model.selectedItems[index]);
+			var item = Model.selectedItems[index];
+			Main.deposit(item, function () {
+				$.ajax({
+					url: Main.url('createAuction'),
+					data: {
+						itemId: item.name.id,
+						quantity: item.quantity || 1,
+						sourceType: 0,
+						duration: Model.config.duration,
+						stacks: item.stacks || 1,
+						buyout: item.buyout,
+						bid: item.buyout,
+						type: item.type,
+						ticket: item.ticket,
+						xstoken: Cookie.read('xstoken')
+					},
+					dataType: 'json',
+					type: 'POST',
+					success: function (data) {
+						//todo
+					}
+				});
+			});
 
 			setTimeout(function () {
 				Main.sell(index+1);
 			}, 500);
 		},
-		deposit: function (item) {
+		deposit: function (item, callback) {
 			$.ajax({
 				url: Main.url('deposit'),
 				data: {
@@ -161,9 +183,12 @@ mainApp.controller("mainController", function ($scope) {
 
 					if (Model.money.amount < data.deposit.deposit) {
 						//todo 钱不够了
+						return;
 					} else {
 						item.ticket = data.ticket;
 					}
+
+					callback();
 				}
 			});
 		}

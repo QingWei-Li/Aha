@@ -1,6 +1,7 @@
 {
 	"window":{
-		"toolbar":false
+		"toolbar":false,
+		"width": 800
 	},
 	"name": "Aha",
 	"main": "main.html",
