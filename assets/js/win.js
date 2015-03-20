@@ -42,7 +42,6 @@ $(function () {
 				loginWin = null;
 				clearInterval(interval);
 				Main.init();
-				Package.init();
 			});
 			
 		},

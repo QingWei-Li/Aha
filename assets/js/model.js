@@ -23,12 +23,12 @@ Model = {
                     q: Model.items[x].quality
                 },
                 quality: Model.items[x].q0,
-                pinyin: PinYin.to(Model.items[i].name)
+                pinyin: PinYin.to(Model.items[x].name)
             });
         }
     },
     init:function () {
-    	if(localStorage.items)
+    	if(localStorage.gridData)
     		Model.gridData = JSON.parse(localStorage.gridData);
     	if(localStorage.character)
     		Model.character = JSON.parse(localStorage.character);

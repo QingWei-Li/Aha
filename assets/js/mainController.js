@@ -23,7 +23,7 @@ mainApp.controller("mainController", function ($scope) {
 	Main = {
 		init: function () {
 			Main.load();
-			Main.similar(null, 0);
+			Package.init();
 		},
 		url: function (url) {
 			return Core.baseUrl+"vault/character/auction/"+url;
@@ -35,6 +35,9 @@ mainApp.controller("mainController", function ($scope) {
 					Model.money = Main.formatMoney(data.money);
 					Model.character = data.character;
 					Main.bind();
+				},
+				beforeSend: function () {
+					Main.status("用户信息更新中...");
 				}
 			});
 		},
@@ -53,35 +56,41 @@ mainApp.controller("mainController", function ($scope) {
 				copper: copper
 			};
 		},
-		similar: function (id, index) {
+		similar: function (id, index, cache) {
 			var similar = "";
-			if(index >= Model.gridData.length) return;
+			if(index >= Model.gridData.length) {
+				return Main.status();
+			};
 			id = id || Model.gridData[index].name.id;
 
 			$.ajax({
 				url: Main.url('similar'),
 				dataType: 'html',
-				cache: false,
+				cache: cache,
 				data: {
 					sort: 'unitBuyout',
 					itemId: id
 				},
 				success: function (res) {
-					var re = /gold\D+(\d+)\D+(\d+)\D+(\d+)/g;
+					var re = /gold\D+([\d,]+)\D+(\d+)\D+(\d+)/g;
 					var html = re.exec(res) || ["00","00","00","00"];
+					
+					if(html[1].indexOf(',')>-1) html[1] = html[1].replace(",","");
 					for (var i = 1; i < html.length; i++) {
 						if(html[i].length<2){
 							html[i] = "0" + html[i];
 						}
 						similar += html[i];
 					};
-					console.log(similar);
 					Model.gridData[index].similar = similar;
 					Main.bind();
 					setTimeout(function () {
-						Main.similar(null, index+1);
+						Main.similar(null, index+1, false);
 					}, 500);
 				},
+				beforeSend: function () {
+					Main.status("价格查询中("+(index+1)+"/"+Model.gridData.length+")...");
+				}
 			});
 		},
 		bind: function () {
@@ -89,6 +98,12 @@ mainApp.controller("mainController", function ($scope) {
 				$scope.money = Model.money;
 				$scope.character = Model.character;
 				$scope.gridData = Model.gridData;
+			})
+		},
+		status: function (msg) {
+			msg = msg || "";
+			$scope.$apply(function () {
+				$scope.status = msg;
 			})
 		}
 	}

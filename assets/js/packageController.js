@@ -26,6 +26,15 @@ mainApp.controller("packageController", function ($scope) {
 						);
 					Model.store();
 					Main.bind();
+				},
+				error: function (err) {
+					console.log(err);
+				},
+				beforeSend: function () {
+					Main.status("商品列表更新中...");
+				},
+				complete: function () {
+					Main.similar(null, 0, false);
 				}
 			})
 		},
