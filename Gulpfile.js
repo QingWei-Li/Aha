@@ -11,9 +11,9 @@ gulp.task('nw', function () {
     });
 
     // Log stuff you want
-    nw.on('log', function (msg) {
-        console.log(msg);
-    });
+    //nw.on('log', function (msg) {
+    //    console.log(msg);
+    //});
 
     // Build returns a promise, return it so the task isn't called in parallel
     return nw.build().catch(function (err) {

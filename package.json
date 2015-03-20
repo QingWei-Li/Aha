@@ -1,0 +1,24 @@
+{
+  "name": "Aha",
+  "version": "0.0.1",
+  "description": "The World of warcraft auction house client(chinese)",
+  "main": "Gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "node-webkit-builder": "^1.0.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QingWei-Li/Aha.git"
+  },
+  "keywords": [
+    "Wow",
+    "AH"
+  ],
+  "author": "cinwell<cinwell.li@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QingWei-Li/Aha/issues"
+  },
+  "homepage": "https://github.com/QingWei-Li/Aha"
+}

@@ -13,7 +13,7 @@ Model = {
     */
     items: [],
     gridData:[],
-    bind: function () {
+    store: function () {
         Model.gridData = [];
         for(x in Model.items){
             Model.gridData.push({
@@ -23,7 +23,7 @@ Model = {
                     q: Model.items[x].quality
                 },
                 quality: Model.items[x].q0,
-                pinyin: Model.items[x].pinyin
+                pinyin: PinYin.to(Model.items[i].name)
             });
         }
     },

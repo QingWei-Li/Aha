@@ -10,7 +10,6 @@ mainApp.controller("packageController", function ($scope) {
 					Tooltip.show(event.target, '/item/' + id + '/tooltip', true);
 				}
 			});
-			//Package.chcekboxBind();
 		},
 		load: function () {
 			//if u're using '$http' will be able to get the data, I don't know why
@@ -25,11 +24,8 @@ mainApp.controller("packageController", function ($scope) {
 						.replace(/}(.*)$/g,"]$1")
 						.replace(/('[^:]+:.*){/g,"{")
 						);
-					Main.toPinYin();
-					Model.bind();
-					$scope.$apply(function () {
-						$scope.gridData = Model.gridData;
-					})
+					Model.store();
+					Main.bind();
 				}
 			})
 		},

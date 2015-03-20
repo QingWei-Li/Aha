@@ -84,11 +84,6 @@ mainApp.controller("mainController", function ($scope) {
 				},
 			});
 		},
-		toPinYin: function () {
-			for (var i = 0; i < Model.items.length; i++) {
-				Model.items[i].pinyin = PinYin.to(Model.items[i].name);
-			};
-		},
 		bind: function () {
 			$scope.$apply(function () {
 				$scope.money = Model.money;
