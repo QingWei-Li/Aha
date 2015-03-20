@@ -8,6 +8,8 @@ mainApp.controller("mainController", function ($scope) {
 	var cellTemplate = function (str) {
 		return  "<div class='ngCellText text-center' ng-class='col.colIndex()'><span ng-cell-text>"+str+"</span></div>";
 	}
+	var editableCellTemplate = '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" />';
+
 	$scope.grid = {
 		data: 'gridData',
         enableColumnResize:true,
@@ -19,11 +21,10 @@ mainApp.controller("mainController", function ($scope) {
 			{field: "name", displayName: "名称", width: "**", cellTemplate: "<div class='ngCellText' ng-class='col.colIndex()'><span ng-cell-text><a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a></span></div>"},
 			{field: "quality", displayName: "数量", width:'auto'},
 			{field: "similar", displayName: "市场最低价(个)", width: "**", cellTemplate: moneyTemplate},
-			{field: "buyout", displayName: "设置一口价(个)", width: "**", enableCellEdit: true, cellTemplate: moneyTemplate},
-			{field: "name.id", displayName: "方式", cellTemplate: cellTemplate('<label><input name="type-{{row.getProperty(col.field)}}" type="radio" value="group"/>组</label>'+
-			'<label><input name="type-{{row.getProperty(col.field)}}" type="radio" value="single" checked="checked"/>个</label>')},
-			{field: "quantity", displayName: "堆叠数量", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 0}}')},
-			{field: "stacks", displayName: "堆叠组数", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 0}}')}
+			{field: "buyout", displayName: "设置一口价(个)", width: "**", enableCellEdit: true, cellTemplate: moneyTemplate, editableCellTemplate: editableCellTemplate},
+			{field: "name.id", displayName: "方式", cellTemplate: cellTemplate('<label><input name="type-{{row.getProperty(col.field)}}" type="radio" value="group"/>组</label>&nbsp;<label><input name="type-{{row.getProperty(col.field)}}" type="radio" value="single" checked="checked"/>个</label>')},
+			{field: "quantity", displayName: "堆叠数量", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), editableCellTemplate: editableCellTemplate},
+			{field: "stacks", displayName: "堆叠组数", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), editableCellTemplate: editableCellTemplate}
 		]
 		
 	};
@@ -66,7 +67,8 @@ mainApp.controller("mainController", function ($scope) {
 			return {
 				gold: gold,
 				silver: silver,
-				copper: copper
+				copper: copper,
+				amount: amount
 			};
 		},
 		similar: function (id, index, cache) {
@@ -131,59 +133,36 @@ mainApp.controller("mainController", function ($scope) {
 		sell: function (index) {
 			if(index >= Model.selectedItems.length) return;
 			//todo
+			Main.deposit(Model.selectedItems[index]);
 
 			setTimeout(function () {
 				Main.sell(index+1);
 			}, 500);
 		},
-		updateDeposit: function () {
-			update = update !== false;
+		deposit: function (item) {
 			$.ajax({
-				url: 'deposit',
+				url: Main.url('deposit'),
 				data: {
-					item: AuctionCreate.item.id,
-					duration: $('#form-duration').val(),
-					quan: AuctionCreate.isNumeric($('#form-quantity').val()),
-					stacks: AuctionCreate.isNumeric($('#form-stacks').val()),
+					item: item.name.id,
+					duration: Model.config.duration,
+					quan: item.quantity,
+					stacks: item.stacks,
 					sk: Cookie.read('xstoken')
 				},
 				dataType: 'json',
 				type: 'POST',
 				success: function(data, status) {
 					if (data.error) {
-						AuctionCreate.showError(data.error.message);
+						//todo 数据获取失败
 						return;
 					}
+					//保证金，以后可能会用到
+					//var deposit = Main.formatMoney(data.deposit.deposit); 
 
-					var deposit = Auction.formatMoney(data.deposit.deposit); // Deposit
-
-					$('#deposit .icon-copper').html(deposit.copper.toString());
-					$('#deposit .icon-silver').html(deposit.silver.toString());
-					$('#deposit .icon-gold').html(deposit.gold.toString());
-
-					if (update) {
-						AuctionCreate.resetPerType();
-
-						if (AuctionCreate.created[AuctionCreate.item.id]) {
-							// Do nothing, use cached values
-						} else {
-							var setStarting = false;
-
-							if (data.deposit.suggestedPrice > AuctionCreate.getStarting())
-								setStarting = true;
-							else if ((AuctionCreate.lastItem && AuctionCreate.item.id != AuctionCreate.lastItem.id))
-								setStarting = true;
-
-							if (setStarting)
-								AuctionCreate.setStarting(data.deposit.suggestedPrice);
-						}
-					}
-
-					if (Auction.money < data.deposit.deposit) {
-						AuctionCreate.disable('#button-create');
-						AuctionCreate.showError(AuctionCreate.errors.deposit);
+					if (Model.money.amount < data.deposit.deposit) {
+						//todo 钱不够了
 					} else {
-						AuctionCreate.ticket = data.ticket;
+						item.ticket = data.ticket;
 					}
 				}
 			});

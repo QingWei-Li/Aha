@@ -20,7 +20,8 @@ Model = {
     config: {
         spread: 1,
         homePage: "package",
-        updateSimilar: false
+        updateSimilar: false,
+        duration: 2 //0:12h,1:24h,2:48h
     },
     store: function () {
         Model.gridData = [];
