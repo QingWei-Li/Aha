@@ -16,6 +16,9 @@ mainApp.controller("packageController", function ($scope) {
 				Main.sell(0);
 			});
 			$("#refresh").click(function () {
+				if($(this).attr('data-run') === "true") {
+					return $(this).attr('data-stop',true);
+				};
 				Package.load(true);
 			});
 		},
@@ -34,7 +37,8 @@ mainApp.controller("packageController", function ($scope) {
 					if(Model.config.updateSimilar || loadSimilar){
 						Main.similar(null, 0, false);
 					}else{
-						$("#refresh").removeAttr("disabled");
+						$("#refresh").text("刷新");
+						$("#refresh").attr('data-run',false);
 						Main.status();
 					}
 				},
@@ -45,7 +49,8 @@ mainApp.controller("packageController", function ($scope) {
 					}
 				},
 				beforeSend: function () {
-					$("#refresh").attr("disabled",true);
+					$("#refresh").text("暂停");
+					$("#refresh").attr("data-run",true);
 					Main.status("商品列表更新中...");
 				}
 			})

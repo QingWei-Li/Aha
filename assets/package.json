@@ -1,6 +1,6 @@
 {
 	"window":{
-		"toolbar":false,
+		"toolbar": true,
 		"width": 800
 	},
 	"name": "Aha",

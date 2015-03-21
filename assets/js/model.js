@@ -33,7 +33,8 @@ Model = {
                     q: Model.items[x].quality
                 },
                 quality: Model.items[x].q0,
-                pinyin: PinYin.to(Model.items[x].name)
+                pinyin: PinYin.to(Model.items[x].name),
+                type: 0
             });
         }
     },

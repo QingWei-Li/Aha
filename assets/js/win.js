@@ -25,21 +25,28 @@ $(function () {
 			loginWin = Win.gui.Window.open("https://www.battlenet.com.cn/login/zh/",{x:-1000,y:-1000});
 			loginWin.hide();
 			loginWin.on('document-end',function () {
-				if(this.window.location.href.indexOf('ref')>-1 && localStorage.xstoken){
-					this.close();	
+				var self = this;
+				if(self.window.location.href.indexOf('ref')>-1 && localStorage.email && localStorage.password){
+					self.window.$('#password').val(localStorage.password);
+					self.window.$('#accountName').val(localStorage.email);
+					self.window.$('#submit').click();
 				}else{
 					localStorage.xstoken = null;
-					loginWin.setPosition('center');
-					loginWin.show();
+					self.setPosition('center');
+					self.show();
+					self.window.$('form').submit(function (e) {
+						localStorage.password = self.window.$('#password').val();
+						localStorage.email = self.window.$('#accountName').val();
+						return true;
+					})
 				}
 
 				interval = setInterval(function () {
-					if(loginWin.window.location.href.indexOf("https://www.battlenet.com.cn/account/management/") == 0){
-						loginWin.hide();
+					if(self.window.location.href.indexOf("https://www.battlenet.com.cn/account/management/") == 0){
+						self.hide();
 					}
-					if(loginWin.window.Cookie && loginWin.window.Cookie.read('xstoken')){
-							localStorage.xstoken = loginWin.window.Cookie.read('xstoken');
-							loginWin.close();
+					if(self.window.Cookie.read('xstoken')){
+							self.close();
 						}
 				},500);
 			})
@@ -48,6 +55,10 @@ $(function () {
 				clearInterval(interval);
 				Main.init();
 
+			});
+			loginWin.on('close', function() {
+				localStorage.xstoken = loginWin.window.Cookie.read('xstoken');
+				this.close(true);
 			});
 			
 		},

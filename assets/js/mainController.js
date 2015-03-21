@@ -1,9 +1,9 @@
 var Main = {};
 mainApp.controller("mainController", function ($scope) {
 	var moneyTemplate = '<div class="ngCellText colt{{$index}}">'+
-							'<span class="icon-gold">{{row.getProperty(col.field).gold}}</span>'+
-							'<span class="icon-silver">{{row.getProperty(col.field).silver}}</span>'+
-							'<span class="icon-copper">{{row.getProperty(col.field).copper}}</span>'+
+							'<span class="icon-gold">{{row.getProperty(col.field).gold || 0}}</span>'+
+							'<span class="icon-silver">{{row.getProperty(col.field).silver || 0}}</span>'+
+							'<span class="icon-copper">{{row.getProperty(col.field).copper || 0}}</span>'+
 						'</div>';
 	var cellTemplate = function (str) {
 		return  "<div class='ngCellText text-center' ng-class='col.colIndex()'><span ng-cell-text>"+str+"</span></div>";
@@ -12,37 +12,71 @@ mainApp.controller("mainController", function ($scope) {
 
 	$scope.grid = {
 		data: 'gridData',
-        enableColumnResize:true,
-        showSelectionCheckbox:true,
         i18n: 'zh-cn',
 		showFilter: true,
+        enableColumnResize:true,
+        showSelectionCheckbox:true,
 		selectedItems: Model.selectedItems,
-		columnDefs: [
-			{field: "name", displayName: "名称", width: "**", cellTemplate: "<div class='ngCellText' ng-class='col.colIndex()'><span ng-cell-text><a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a></span></div>"},
-			{field: "quality", displayName: "数量", width:'auto'},
-			{field: "similar", displayName: "市场最低价(个)", width: "**", cellTemplate: moneyTemplate},
-			{field: "buyout", displayName: "设置一口价(个)", width: "**", enableCellEdit: true, cellTemplate: moneyTemplate, editableCellTemplate: editableCellTemplate},
-			{field: "type", displayName: "方式(0:个,1:组)", width: "110", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 0}}'), editableCellTemplate: '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" min="0" max="1"/>'},
-			{field: "quantity", displayName: "堆叠数量", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), editableCellTemplate: editableCellTemplate},
-			{field: "stacks", displayName: "堆叠组数", enableCellEdit: true, cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), editableCellTemplate: editableCellTemplate}
-		]
+		columnDefs: 
+			[{
+				field: "name", 
+				displayName: "名称", 
+				width: "**", 
+				cellTemplate: "<div class='ngCellText' ng-class='col.colIndex()'><span ng-cell-text><a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a></span></div>"
+			},{
+				field: "quality", 
+				displayName: "数量", 
+				width:'auto'
+			},{
+				field: "similar", 
+				displayName: "市场最低价(个)", 
+				width: "**", 
+				cellTemplate: moneyTemplate
+				},{field: "buyout", 
+				displayName: "设置一口价(个)", 
+				width: "**",
+				enableCellEdit: true, 
+				cellTemplate: moneyTemplate, 
+				editableCellTemplate: '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD.amount" ng-model="COL_FIELD.amount" />'
+			},{
+				field: "type", 
+				displayName: "方式(0:个,1:组)", 
+				width: "110", 
+				enableCellEdit: true, 
+				cellTemplate: cellTemplate('{{row.getProperty(col.field) || 0}}'), editableCellTemplate: '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" min="0" max="1"/>'
+			},{
+				field: "quantity", 
+				displayName: "堆叠数量", 
+				enableCellEdit: true, 
+				cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), 
+				editableCellTemplate: editableCellTemplate
+			},{
+				field: "stacks", 
+				displayName: "堆叠组数", 
+				enableCellEdit: true, 
+				cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), 
+				editableCellTemplate: editableCellTemplate
+			}]
 		
 	};
-	//todo 价格显示问题，应该是数字类型，用对象表示，但是如果改了值就要监听到才可以，关键是如何监听
 	 $scope.$on('ngGridEventEndCellEdit', function (evt) {
                 var item = evt.targetScope.row.entity;
+                if(item.buyout && item.buyout.amount)
+               		item.buyout = Main.formatMoney(item.buyout.amount);
             });
 
 	Main = {
 		init: function () {
 			Main.load();
-			if(Model.config.homePage === "package"){
-				Package.init();
-				$scope.title = "背包列表";
-			}else if(Model.config.homePage === "onsell"){
-				OnSell.init();
-				$scope.title = "在售商品";
-			}
+			setTimeout(function () {
+				if(Model.config.homePage === "package"){
+					Package.init();
+					$scope.title = "背包列表";
+				}else if(Model.config.homePage === "onsell"){
+					OnSell.init();
+					$scope.title = "在售商品";
+				}
+			}, 1000);
 		},
 		url: function (url) {
 			return Core.baseUrl+"vault/character/auction/"+url;
@@ -77,8 +111,10 @@ mainApp.controller("mainController", function ($scope) {
 			};
 		},
 		similar: function (id, index, cache) {
-			if(index >= Model.gridData.length) {
-				$("#refresh").removeAttr("disabled");
+			if(index >= Model.gridData.length || $('#refresh').attr('data-stop') === 'true') {
+				$("#refresh").text("刷新");
+				$("#refresh").attr('data-run',false);
+				$("#refresh").removeAttr('data-stop');
 				return Main.status();
 			};
 			id = id || Model.gridData[index].name.id;
@@ -96,14 +132,11 @@ mainApp.controller("mainController", function ($scope) {
 					var html = re.exec(res) || [0,0,0,0];
 					html.shift();
 					if(html[0].indexOf && html[0].indexOf(',')>-0) html[0] = html[0].replace(",","");
-					/*for (var i = 1; i < html.length; i++) {
+					for (var i = 0; i < html.length; i++) {
 						if(html[i].length<2){
 							html[i] = "0" + html[i];
 						}
-						similar += html[i];
-					};*/
-
-					//todo 数字小于两位要补全
+					};
 					var similar = {
 						gold: parseInt(html[0]) || 0,
 						silver: parseInt(html[1]) || 0,
@@ -112,9 +145,6 @@ mainApp.controller("mainController", function ($scope) {
 					};
 					Model.gridData[index].similar = similar;
 					Model.gridData[index].buyout = Main.initPrice(similar.amount);
-					console.log(similar);
-					console.log(Main.initPrice(similar.amount));
-
 					Main.bind();
 
 					setTimeout(function () {
@@ -129,7 +159,7 @@ mainApp.controller("mainController", function ($scope) {
 		initPrice: function (amount) {
 			var spread = Model.config.spread || 0;
 			amount = amount - spread;
-			amount = amount?amount:0;
+			amount = amount>0?amount:0;
 			return Main.formatMoney(amount);
 		},
 		bind: function () {
@@ -158,11 +188,11 @@ mainApp.controller("mainController", function ($scope) {
 						sourceType: 0,
 						duration: Model.config.duration,
 						stacks: item.stacks || 1,
-						buyout: item.buyout,
-						bid: item.buyout,
-						type: item.type,
+						buyout: item.buyout.amount,
+						bid: item.buyout.amount,
+						type: item.type>0?'perstack':'perItem',
 						ticket: item.ticket,
-						xstoken: Cookie.read('xstoken')
+						xstoken: localStorage.xstoken
 					},
 					dataType: 'json',
 					type: 'POST',
@@ -184,7 +214,7 @@ mainApp.controller("mainController", function ($scope) {
 					duration: Model.config.duration,
 					quan: item.quantity,
 					stacks: item.stacks,
-					sk: Cookie.read('xstoken')
+					sk: localStorage.xstoken
 				},
 				dataType: 'json',
 				type: 'POST',
