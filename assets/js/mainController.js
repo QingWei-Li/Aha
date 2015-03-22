@@ -17,7 +17,7 @@ mainApp.controller("mainController", function ($scope) {
 		showFilter: true,
         enableColumnResize:true,
         showSelectionCheckbox:true,
-		selectedItems: Model.selectedItems,
+		selectedItems: Model.selectedPackage,
 		columnDefs: 
 			[{
 				field: "name", 
@@ -66,7 +66,7 @@ mainApp.controller("mainController", function ($scope) {
         showFilter: true,
         enableColumnResize:true,
         showSelectionCheckbox:true,
-		selectedItems: Model.selectedItems,
+		selectedItems: Model.selectedExpired,
 		columnDefs: [
 				{field: "name", displayName: "名称", width: "**", cellTemplate: nameTemplate},
 				{field: "quantity", displayName: "数量"},
@@ -210,9 +210,13 @@ mainApp.controller("mainController", function ($scope) {
 				$scope.status = msg;
 			})
 		},
-		sell: function (index) {
-			if(index >= Model.selectedItems.length) return;
-			var item = Model.selectedItems[index];
+		sell: function (items, index, callback) {
+			index = index || 0;
+			if(index >= items.length) {
+				callback();
+				return;
+			};
+			var item = items[index];
 			
 			Main.deposit(item, function () {
 				$.ajax({
@@ -232,13 +236,13 @@ mainApp.controller("mainController", function ($scope) {
 					dataType: 'json',
 					type: 'POST',
 					success: function (data) {
-						Main.status("出售中("+(index+1)+"/"+Model.selectedItems.length+")...");
+						Main.status("出售中("+(index+1)+"/"+items.length+")...");
 					}
 				});
 			});
 
 			setTimeout(function () {
-				Main.sell(index+1);
+				Main.sell(items, index+1, callback);
 			}, 500);
 		},
 		deposit: function (item, callback) {

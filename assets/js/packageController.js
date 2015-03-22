@@ -3,11 +3,11 @@ mainApp.controller("packageController", function ($scope) {
 	Package = {
 		init: function () {
 			Package.load();
-			
-
 			//bind Event
 			$("#sell").click(function () {
-				Main.sell(0);
+				Main.sell(Model.selectedPackage,0,function () {
+					Package.load(false);
+				});
 			});
 			$("#refresh").click(function () {
 				if($(this).attr('data-run') === "true") {

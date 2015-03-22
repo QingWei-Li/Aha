@@ -3,8 +3,18 @@ mainApp.controller("expiredController", function ($scope) {
 	Expired = {
 		init: function () {
 			Expired.load();
+			$("#sellExpired").click(function () {
+				Main.sell(Model.selectedExpired,0,function () {
+					Expired.load(null,function () {
+						Main.load();
+					});
+				});
+			});
+			$("#refreshExpired").click(function () {
+				Expired.load();
+			});
 		},
-		load: function () {
+		load: function (similar,callback) {
 			$.ajax({
 				url: Main.url('mail'),
 				data: {
@@ -40,6 +50,7 @@ mainApp.controller("expiredController", function ($scope) {
 								break;
 						}
 					}
+					if(callback) callback();
 				}
 					
 			});

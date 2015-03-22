@@ -18,7 +18,8 @@ Model = {
     package:[],
     expired:[],
     sold:[],
-    selectedItems:[],
+    selectedExpired:[],
+    selectedPackage:[],
     config: {
         spread: 1,
         homePage: "package",
