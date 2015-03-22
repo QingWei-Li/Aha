@@ -15,7 +15,9 @@ Model = {
     /**
     * display in the grid
     */
-    gridData:[],
+    package:[],
+    expired:[],
+    sold:[],
     selectedItems:[],
     config: {
         spread: 1,
@@ -24,9 +26,9 @@ Model = {
         duration: 2 //0:12h,1:24h,2:48h
     },
     store: function () {
-        Model.gridData = [];
+        Model.package = [];
         for(x in Model.items){
-            Model.gridData.push({
+            Model.package.push({
                 name: {
                     title: Model.items[x].name,
                     id: Model.items[x].id,
@@ -39,15 +41,15 @@ Model = {
         }
     },
     init:function () {
-    	if(localStorage.gridData)
-    		Model.gridData = JSON.parse(localStorage.gridData);
+    	if(localStorage.package)
+    		Model.package = JSON.parse(localStorage.package);
     	if(localStorage.character)
     		Model.character = JSON.parse(localStorage.character);
     	if(localStorage.money)
     		Model.money = JSON.parse(localStorage.money);
     },
     save:function () {
-    	localStorage.gridData = JSON.stringify(Model.gridData);
+    	localStorage.package = JSON.stringify(Model.package);
     	localStorage.character = JSON.stringify(Model.character);
     	localStorage.money = JSON.stringify(Model.money);
     }

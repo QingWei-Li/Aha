@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>Aha拍卖行助手 —— 地精科技震撼人心</title>
+	<link rel="stylesheet" href="css/ng-grid.css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/base.css"></head>
+<body ng-app="mainApp" ng-controller="mainController">
+	<div role="tabpanel" ng-controller="packageController"  class="tab-pane fade in active" id="create">
+		<div class="container-fluid">
+			<div class="row" id="toolbar">
+				<button type="button" id="sell" class="btn btn-success btn-sm">出售</button>
+				<button type="button" id="refresh" class="btn btn-info btn-sm">刷新</button>
+				<span class="pull-right">{{title}}</span>
+			</div> 
+		</div>
+		<div class="gridStyle1" ng-grid="gridPackage"></div>
+	</div>
+	<footer>
+		<span>
+			<span class="name">{{character.name || '角色名'}}</span>
+			<span class="realmName">{{character.realmName || '服务器'}}</span>
+		</span>
+		<span class="pull-right">
+			<span class="icon-gold">{{money.gold || 0}}</span>
+			<span class="icon-silver">{{money.silver || 0}}</span>
+			<span class="icon-copper">{{money.copper || 0}}</span>
+		</span>
+		<span id="status" class="pull-right">{{status}}</span>
+	</footer>
+</body>
+	<script src="js/libs/jquery.min.js"></script>
+	<script src="js/libs/bootstrap.min.js"></script>
+	<script src="js/libs/PinYin.js"></script>
+	<script src="js/libs/angular.min.js"></script>
+	<script src="js/libs/ng-grid.min.js"></script>
+	<script src="js/model.js"></script>
+	<script src="js/mainApp.js"></script>
+	<script src="js/mainController.js"></script>
+	<script src="js/expiredController.js"></script>
+	<script src="js/soldController.js"></script>
+	<script src="js/packageController.js"></script>
+	<script src="js/win.js"></script>
+	<script src="https://www.battlenet.com.cn/wow/static/local-common/js/common-game-site.js?v=58-69"></script>
+</html>

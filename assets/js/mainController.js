@@ -8,10 +8,11 @@ mainApp.controller("mainController", function ($scope) {
 	var cellTemplate = function (str) {
 		return  "<div class='ngCellText text-center' ng-class='col.colIndex()'><span ng-cell-text>"+str+"</span></div>";
 	}
+	var nameTemplate = "<div class='ngCellText' ng-class='col.colIndex()'><span ng-cell-text><a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a></span></div>";
 	var editableCellTemplate = '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" />';
-
-	$scope.grid = {
-		data: 'gridData',
+	var similarEditableCellTemplate = '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD.amount" ng-model="COL_FIELD.amount" />';
+	$scope.gridPackage = {
+		data: 'package',
         i18n: 'zh-cn',
 		showFilter: true,
         enableColumnResize:true,
@@ -22,7 +23,7 @@ mainApp.controller("mainController", function ($scope) {
 				field: "name", 
 				displayName: "名称", 
 				width: "**", 
-				cellTemplate: "<div class='ngCellText' ng-class='col.colIndex()'><span ng-cell-text><a class='item-q item-q{{row.getProperty(col.field).q}}' data-id='{{row.getProperty(col.field).id}}'>{{row.getProperty(col.field).title}}</a></span></div>"
+				cellTemplate: nameTemplate
 			},{
 				field: "quality", 
 				displayName: "数量", 
@@ -37,7 +38,7 @@ mainApp.controller("mainController", function ($scope) {
 				width: "**",
 				enableCellEdit: true, 
 				cellTemplate: moneyTemplate, 
-				editableCellTemplate: '<input type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD.amount" ng-model="COL_FIELD.amount" />'
+				editableCellTemplate: similarEditableCellTemplate
 			},{
 				field: "type", 
 				displayName: "方式(0:个,1:组)", 
@@ -57,26 +58,59 @@ mainApp.controller("mainController", function ($scope) {
 				cellTemplate: cellTemplate('{{row.getProperty(col.field) || 1}}'), 
 				editableCellTemplate: editableCellTemplate
 			}]
-		
 	};
-	 $scope.$on('ngGridEventEndCellEdit', function (evt) {
-                var item = evt.targetScope.row.entity;
-                if(item.buyout && item.buyout.amount)
-               		item.buyout = Main.formatMoney(item.buyout.amount);
-            });
+
+	$scope.gridExpired = {
+		data: 'expired',
+        i18n: 'zh-cn',
+        showFilter: true,
+        enableColumnResize:true,
+        showSelectionCheckbox:true,
+		selectedItems: Model.selectedItems,
+		columnDefs: [
+				{field: "name", displayName: "名称", width: "**", cellTemplate: nameTemplate},
+				{field: "quantity", displayName: "数量"},
+				{field: "similar", displayName: "市场最低价", width: "**", cellTemplate: moneyTemplate},
+				{field: "buyout", displayName: "设置一口价", width: "**", cellTemplate: moneyTemplate, editableCellTemplate: similarEditableCellTemplate, enableCellEdit: true},
+				{field: "status", displayName: "状态"},
+				{field: "time", displayName: "剩余时间(天)", width: "100"}
+			]
+	};
+
+	$scope.$on('ngGridEventEndCellEdit', function (evt) {
+	        var item = evt.targetScope.row.entity;
+	        if(item.buyout && item.buyout.amount)
+	       		item.buyout = Main.formatMoney(item.buyout.amount);
+	    });
 
 	Main = {
+		title: function (title) {
+			$scope.$apply(function () {
+				$scope.title = title;
+			})
+		},
 		init: function () {
 			Main.load();
 			setTimeout(function () {
 				if(Model.config.homePage === "package"){
-					Package.init();
 					$scope.title = "背包列表";
-				}else if(Model.config.homePage === "onsell"){
-					OnSell.init();
-					$scope.title = "在售商品";
+				}else if(Model.config.homePage === "expired"){
+					$scope.title = "结束的拍卖";
+				}else if(Model.config.homePage === "sold"){
+					$scope.title = "售出的拍卖";
 				}
-			}, 1000);
+				Package.init();
+				Expired.init();
+				Sold.init();
+
+				Tooltip.factory('.tab-pane a[data-id]', {
+					onShow: function (event) {
+						var self = $(event.target),
+							id = self.data('id');
+						Tooltip.show(event.target, '/item/' + id + '/tooltip', true);
+					}
+				});
+			}, 500);
 		},
 		url: function (url) {
 			return Core.baseUrl+"vault/character/auction/"+url;
@@ -111,13 +145,13 @@ mainApp.controller("mainController", function ($scope) {
 			};
 		},
 		similar: function (id, index, cache) {
-			if(index >= Model.gridData.length || $('#refresh').attr('data-stop') === 'true') {
+			if(index >= Model.package.length || $('#refresh').attr('data-stop') === 'true') {
 				$("#refresh").text("刷新");
 				$("#refresh").attr('data-run',false);
 				$("#refresh").removeAttr('data-stop');
 				return Main.status();
 			};
-			id = id || Model.gridData[index].name.id;
+			id = id || Model.package[index].name.id;
 
 			$.ajax({
 				url: Main.url('similar'),
@@ -143,8 +177,8 @@ mainApp.controller("mainController", function ($scope) {
 						copper: parseInt(html[2]) || 0,
 						amount: parseInt(html.join('')) || 0 
 					};
-					Model.gridData[index].similar = similar;
-					Model.gridData[index].buyout = Main.initPrice(similar.amount);
+					Model.package[index].similar = similar;
+					Model.package[index].buyout = Main.initPrice(similar.amount);
 					Main.bind();
 
 					setTimeout(function () {
@@ -152,7 +186,7 @@ mainApp.controller("mainController", function ($scope) {
 					}, 500);
 				},
 				beforeSend: function () {
-					Main.status("价格查询中("+(index+1)+"/"+Model.gridData.length+")...");
+					Main.status("价格查询中("+(index+1)+"/"+Model.package.length+")...");
 				}
 			});
 		},
@@ -166,7 +200,8 @@ mainApp.controller("mainController", function ($scope) {
 			$scope.$apply(function () {
 				$scope.money = Model.money;
 				$scope.character = Model.character;
-				$scope.gridData = Model.gridData;
+				$scope.package = Model.package;
+				$scope.expired = Model.expired;
 			})
 		},
 		status: function (msg) {

@@ -9,14 +9,28 @@ $(function () {
 		},
 		initMenu: function () {
 			var menu = new Win.gui.Menu({type:"menubar"});
+			var changeTitle = function (title) {
+				Main.title(title);
+				//The ng-grid bug
+				setTimeout(function () {
+					Win.gui.Window.get().resizeBy(1,1);
+					Win.gui.Window.get().resizeBy(-1,-1);
+				}, 15);
+			}
 			menu.append(new Win.gui.MenuItem({label:"背包"}));
 			menu.append(new Win.gui.MenuItem({label:"售出的拍卖"}));
 			menu.append(new Win.gui.MenuItem({label:"结束的拍卖"}));
 			menu.items[0].click = function () {
 				$("a[href='#create']").tab('show');
+				changeTitle('背包');
 			};
+			menu.items[1].click = function () {
+				$("a[href='#sold']").tab('show');
+				changeTitle('售出的拍卖');
+			}
 			menu.items[2].click = function () {
-				$("a[href='#auctions']").tab('show');
+				$("a[href='#expired']").tab('show');
+				changeTitle('结束的拍卖');
 			}
 			Win.gui.Window.get().menu = menu;
 		},

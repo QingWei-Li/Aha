@@ -3,13 +3,7 @@ mainApp.controller("packageController", function ($scope) {
 	Package = {
 		init: function () {
 			Package.load();
-			Tooltip.factory('#create a[data-id]', {
-				onShow: function (event) {
-					var self = $(event.target),
-						id = self.data('id');
-					Tooltip.show(event.target, '/item/' + id + '/tooltip', true);
-				}
-			});
+			
 
 			//bind Event
 			$("#sell").click(function () {

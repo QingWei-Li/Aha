@@ -10,18 +10,27 @@
 	<div role="tabpanel" id="main">
 		<ul class="nav nav-tabs" role="tablist" hidden>
 			<li role="presentation">
-				<a href="#auctions" aria-controls="expired" role="tab" data-toggle="tab">结束的拍卖</a>
+				<a href="#expired" aria-controls="expired" role="tab" data-toggle="tab">结束的拍卖</a>
 			</li>
 			<li role="presentation">
-				<a href="#auctions" aria-controls="sold" role="tab" data-toggle="tab">售出的拍卖</a>
+				<a href="#sold" aria-controls="sold" role="tab" data-toggle="tab">售出的拍卖</a>
 			</li>
 			<li role="presentation" class="active">
 				<a href="#create" aria-controls="create" role="tab" data-toggle="tab">背包</a>
 			</li>
 		</ul>
 		<div class="tab-content">
-			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="sold"></div>
-			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="expired"></div>
+			<div role="tabpanel" ng-controller="soldController" class="tab-pane fade" id="sold"></div>
+			<div role="tabpanel" ng-controller="expiredController" class="tab-pane fade" id="expired">
+				<div class="container-fluid">
+					<div class="row" id="toolbar">
+						<button type="button" id="sell2" class="btn btn-success btn-sm">重新拍卖</button>
+						<button type="button" id="refreshExpired" class="btn btn-info btn-sm">刷新</button>
+						<span class="pull-right">{{title}}</span>
+					</div> 
+				</div>
+				<div class="gridStyle" ng-grid="gridExpired"></div>
+			</div>
 			<div role="tabpanel" ng-controller="packageController"  class="tab-pane fade in active" id="create">
 				<div class="container-fluid">
 					<div class="row" id="toolbar">
@@ -30,7 +39,7 @@
 						<span class="pull-right">{{title}}</span>
 					</div> 
 				</div>
-				<div class="gridStyle" ng-grid="grid"></div>
+				<div class="gridStyle" ng-grid="gridPackage"></div>
 			</div>
 		</div>
 	</div>
@@ -55,7 +64,8 @@
 	<script src="js/model.js"></script>
 	<script src="js/mainApp.js"></script>
 	<script src="js/mainController.js"></script>
-	<script src="js/onsellController.js"></script>
+	<script src="js/expiredController.js"></script>
+	<script src="js/soldController.js"></script>
 	<script src="js/packageController.js"></script>
 	<script src="js/win.js"></script>
 	<script src="https://www.battlenet.com.cn/wow/static/local-common/js/common-game-site.js?v=58-69"></script>
