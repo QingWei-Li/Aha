@@ -10,14 +10,18 @@
 	<div role="tabpanel" id="main">
 		<ul class="nav nav-tabs" role="tablist" hidden>
 			<li role="presentation">
-				<a href="#auctions" aria-controls="auctions" role="tab" data-toggle="tab">拍卖</a>
+				<a href="#auctions" aria-controls="expired" role="tab" data-toggle="tab">结束的拍卖</a>
+			</li>
+			<li role="presentation">
+				<a href="#auctions" aria-controls="sold" role="tab" data-toggle="tab">售出的拍卖</a>
 			</li>
 			<li role="presentation" class="active">
-				<a href="#create" aria-controls="create" role="tab" data-toggle="tab">出售</a>
+				<a href="#create" aria-controls="create" role="tab" data-toggle="tab">背包</a>
 			</li>
 		</ul>
 		<div class="tab-content">
-			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="auctions"></div>
+			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="sold"></div>
+			<div role="tabpanel" ng-controller="onsellController" class="tab-pane fade" id="expired"></div>
 			<div role="tabpanel" ng-controller="packageController"  class="tab-pane fade in active" id="create">
 				<div class="container-fluid">
 					<div class="row" id="toolbar">
@@ -25,21 +29,6 @@
 						<button type="button" id="refresh" class="btn btn-info btn-sm">刷新</button>
 						<span class="pull-right">{{title}}</span>
 					</div> 
-					<!-- 作用域问题，自定义的搜索框用不了，以后再想方法
-					<div class="row" id="toolbar">
-						<div class="col-xs-8">
-							<button type="button" class="btn btn-success btn-sm">出售</button>
-							<button type="button" class="btn btn-info btn-sm">刷新</button>
-						</div>
-						<div class="col-xs-4">
-							<div class="input-group">
-								<input type="text" class="form-control" ng-model="filterText" placeholder="商品搜索" aria-describedby="desc-search">
-								<span class="input-group-addon" id="desc-search">
-									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-								</span>
-							</div>
-						</div>
-					</div> -->
 				</div>
 				<div class="gridStyle" ng-grid="grid"></div>
 			</div>

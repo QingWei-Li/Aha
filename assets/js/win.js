@@ -9,10 +9,10 @@ $(function () {
 		},
 		initMenu: function () {
 			var menu = new Win.gui.Menu({type:"menubar"});
-			menu.append(new Win.gui.MenuItem({label:"账户"}));
 			menu.append(new Win.gui.MenuItem({label:"背包"}));
-			menu.append(new Win.gui.MenuItem({label:"在售"}));
-			menu.items[1].click = function () {
+			menu.append(new Win.gui.MenuItem({label:"售出的拍卖"}));
+			menu.append(new Win.gui.MenuItem({label:"结束的拍卖"}));
+			menu.items[0].click = function () {
 				$("a[href='#create']").tab('show');
 			};
 			menu.items[2].click = function () {
