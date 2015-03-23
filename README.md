@@ -1,4 +1,4 @@
-# Aha 魔兽世界拍卖行客户端
+# Aha -- The World of warcraft auction house client(chinese)
 
 - 方便查看市场行情
 - 批量出售
