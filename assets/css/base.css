@@ -164,14 +164,10 @@ footer{
 	position: fixed;
     width: 100%; 
     height: 100%;
-    min-height: 300px;
     padding-bottom: 60px;
 }
 #status{
 	margin-right: 30px;
-}
-label{
-	font-weight: normal;
 }
 #toolbar{
 	margin: 5px -10px;

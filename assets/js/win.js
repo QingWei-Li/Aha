@@ -56,7 +56,7 @@ $(function () {
 				}
 
 				interval = setInterval(function () {
-					if(self.window.location.href.indexOf("https://www.battlenet.com.cn/account/management/") == 0){
+					if(self.window.location.href.indexOf("https://www.battlenet.com.cn/account/management/") === 0){
 						self.hide();
 					}
 					if(self.window.Cookie && self.window.Cookie.read('xstoken')){
@@ -85,7 +85,7 @@ $(function () {
 
 			mainWin.on('close', function() {
 			    this.hide();
-			    if (loginWin != null)
+			    if (loginWin !== null)
 			    	loginWin.close(true);
 				Model.save();
 			    this.close(true);

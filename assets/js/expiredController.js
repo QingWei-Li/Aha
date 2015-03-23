@@ -25,13 +25,14 @@ mainApp.controller("expiredController", function ($scope) {
 				type: 'POST',
 				success: function(data) {
 					if (data.error) {
-						//todo 失败
+						//todo 失败返回信息
 						return;
 					}
 
 					var mail = data.mail.newMessages;
 					for(x in mail){
 						switch (mail[x].mailType.toLowerCase())	{
+							// todo 好像不是deleted
 							case 'expired': case 'deleted':
 								Model.expired.push({
 									name: {
@@ -46,7 +47,14 @@ mainApp.controller("expiredController", function ($scope) {
 								break;
 							case 'sold':
 								Model.sold.push({
-									// todo
+									name: {
+										title: mail[x].attachments[0].name,
+										id: mail[x].attachments[0].id
+									},
+									quantity: mail[x].attachments[0].tooltipParams.quantity || 1,
+									buyout: Main.formatMoney(mail[x].winPrice),
+									status: mail[x].mailType,
+									time: Math.floor(mail[x].timeToDelete/1000/3600/24)
 								});
 								break;
 						}
