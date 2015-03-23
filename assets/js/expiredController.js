@@ -6,6 +6,7 @@ mainApp.controller("expiredController", function ($scope) {
 			$("#sellExpired").click(function () {
 				Main.sell(Model.selectedExpired,0,function () {
 					Expired.load(null,function () {
+						Main.status();
 						Main.load();
 					});
 				});
@@ -13,6 +14,7 @@ mainApp.controller("expiredController", function ($scope) {
 			$("#refreshExpired").click(function () {
 				Expired.load();
 				Main.clearSelected(Model.selectedExpired);
+				Main.bind();
 			});
 		},
 		load: function (similar,callback) {
@@ -30,6 +32,8 @@ mainApp.controller("expiredController", function ($scope) {
 					}
 
 					var mail = data.mail.newMessages;
+					Model.expired = [];
+					Model.sold = [];
 					for(x in mail){
 						switch (mail[x].mailType.toLowerCase())	{
 							// todo 好像不是deleted
@@ -48,10 +52,10 @@ mainApp.controller("expiredController", function ($scope) {
 							case 'sold':
 								Model.sold.push({
 									name: {
-										title: mail[x].attachments[0].name,
-										id: mail[x].attachments[0].id
+										title: mail[x].about.name,
+										id: mail[x].about.id
 									},
-									quantity: mail[x].attachments[0].tooltipParams.quantity || 1,
+									quantity: mail[x].about.tooltipParams.quantity || 1,
 									buyout: Main.formatMoney(mail[x].winPrice),
 									status: mail[x].mailType,
 									time: Math.floor(mail[x].timeToDelete/1000/3600/24)

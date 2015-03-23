@@ -241,7 +241,7 @@ mainApp.controller("mainController", function ($scope) {
 
 			setTimeout(function () {
 				Main.sell(items, index+1, callback);
-			}, 100);
+			}, 500);
 		},
 		deposit: function (item, callback) {
 			$.ajax({
