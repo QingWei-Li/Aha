@@ -12,11 +12,19 @@ mainApp.controller("packageController", function ($scope) {
 			$("#refresh").click(function () {
 				if($(this).attr('data-run') === "true") {
 					return $(this).attr('data-stop',true);
-				};
-				Package.load(true);
+				}else{
+					Package.load(true, function () {
+								if($('#refresh').attr('data-stop') === 'true'){
+									$("#refresh").text("刷新");
+									$("#refresh").attr('data-run',false);
+									$("#refresh").removeAttr('data-stop');
+									return true;
+								}
+							});
+				}
 			});
 		},
-		load: function (loadSimilar) {
+		load: function (loadSimilar, callback) {
 			loadSimilar = loadSimilar || false;
 			//if u're using '$http' will be able to get the data, I don't know why
 			$.ajax({
@@ -29,7 +37,7 @@ mainApp.controller("packageController", function ($scope) {
 					Main.bind();
 
 					if(Model.config.updateSimilar || loadSimilar){
-						Main.similar(null, 0, false);
+						Main.similar(Model.package, 0, false, callback);
 					}else{
 						$("#refresh").text("刷新");
 						$("#refresh").attr('data-run',false);

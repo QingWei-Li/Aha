@@ -144,22 +144,20 @@ mainApp.controller("mainController", function ($scope) {
 				amount: amount
 			};
 		},
-		similar: function (id, index, cache) {
-			if(index >= Model.package.length || $('#refresh').attr('data-stop') === 'true') {
-				$("#refresh").text("刷新");
-				$("#refresh").attr('data-run',false);
-				$("#refresh").removeAttr('data-stop');
+		similar: function (items, index, cache, callback) {
+			if(index >= items.length) {
 				return Main.status();
 			};
-			id = id || Model.package[index].name.id;
-
+			if(callback && callback()) {
+				return Main.status();
+			};
 			$.ajax({
 				url: Main.url('similar'),
 				dataType: 'html',
 				cache: cache,
 				data: {
 					sort: 'unitBuyout',
-					itemId: id
+					itemId: items[index].name.id
 				},
 				success: function (res) {
 					var re = /gold\D+([\d,]+)\D+(\d+)\D+(\d+)/g;
@@ -177,20 +175,20 @@ mainApp.controller("mainController", function ($scope) {
 						copper: parseInt(html[2]) || 0,
 						amount: parseInt(html.join('')) || 0 
 					};
-					Model.package[index].similar = similar;
-					Model.package[index].buyout = Main.initPrice(similar.amount);
+					items[index].similar = similar;
+					items[index].buyout = Main.calcPrice(similar.amount);
 					Main.bind();
 
 					setTimeout(function () {
-						Main.similar(null, index+1, false);
-					}, 500);
+						Main.similar(items, index+1, false, callback);
+					}, 100);
 				},
 				beforeSend: function () {
 					Main.status("价格查询中("+(index+1)+"/"+Model.package.length+")...");
 				}
 			});
 		},
-		initPrice: function (amount) {
+		calcPrice: function (amount) {
 			var spread = Model.config.spread || 0;
 			amount = amount - spread;
 			amount = amount>0?amount:0;
