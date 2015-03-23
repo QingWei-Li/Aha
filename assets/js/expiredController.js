@@ -12,6 +12,7 @@ mainApp.controller("expiredController", function ($scope) {
 			});
 			$("#refreshExpired").click(function () {
 				Expired.load();
+				Main.clearSelected(Model.selectedExpired);
 			});
 		},
 		load: function (similar,callback) {

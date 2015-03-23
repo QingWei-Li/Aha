@@ -59,7 +59,7 @@ $(function () {
 					if(self.window.location.href.indexOf("https://www.battlenet.com.cn/account/management/") == 0){
 						self.hide();
 					}
-					if(self.window.Cookie.read('xstoken')){
+					if(self.window.Cookie && self.window.Cookie.read('xstoken')){
 							self.close();
 						}
 				},500);

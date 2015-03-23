@@ -22,6 +22,8 @@ mainApp.controller("packageController", function ($scope) {
 								}
 							});
 				}
+
+				Main.clearSelected(Model.selectedPackage);
 			});
 		},
 		load: function (loadSimilar, callback) {

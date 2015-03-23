@@ -241,7 +241,7 @@ mainApp.controller("mainController", function ($scope) {
 
 			setTimeout(function () {
 				Main.sell(items, index+1, callback);
-			}, 500);
+			}, 100);
 		},
 		deposit: function (item, callback) {
 			$.ajax({
@@ -272,6 +272,9 @@ mainApp.controller("mainController", function ($scope) {
 					callback();
 				}
 			});
+		},
+		clearSelected: function (model) {
+			model.splice(0, model.length);
 		}
 	}
 
