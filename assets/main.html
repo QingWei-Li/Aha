@@ -26,7 +26,7 @@
 					<div class="row" id="toolbar">
 						<button type="button" id="sellExpired" class="btn btn-success btn-sm">重新拍卖</button>
 						<button type="button" id="refreshExpired" class="btn btn-info btn-sm">刷新</button>
-						<span class="pull-right">{{title}}</span>
+						<span class="pull-right">{{title || "登录中请稍等..."}}</span>
 					</div> 
 				</div>
 				<div class="gridStyle" ng-grid="gridExpired"></div>
@@ -36,7 +36,7 @@
 					<div class="row" id="toolbar">
 						<button type="button" id="sell" class="btn btn-success btn-sm">出售</button>
 						<button type="button" id="refresh" class="btn btn-info btn-sm">刷新</button>
-						<span class="pull-right">{{title}}</span>
+						<span class="pull-right">{{title || "登录中请稍等..."}}</span>
 					</div> 
 				</div>
 				<div class="gridStyle" ng-grid="gridPackage"></div>

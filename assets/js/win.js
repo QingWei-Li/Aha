@@ -36,8 +36,9 @@ $(function () {
 		},
 		loginWin: function () {
 			var interval;
-			loginWin = Win.gui.Window.open("https://www.battlenet.com.cn/login/zh/",{x:-1000,y:-1000});
-			loginWin.hide();
+			loginWin = Win.gui.Window.open("https://www.battlenet.com.cn/login/zh/");
+			//loginWin = Win.gui.Window.open("https://www.battlenet.com.cn/login/zh/",{x:-1000,y:-1000});
+			//loginWin.hide();
 			loginWin.on('document-end',function () {
 				var self = this;
 				if(self.window.location.href.indexOf('ref')>-1 && localStorage.email && localStorage.password){
@@ -57,7 +58,7 @@ $(function () {
 
 				interval = setInterval(function () {
 					if(self.window.location.href.indexOf("https://www.battlenet.com.cn/account/management/") === 0){
-						self.hide();
+						//self.hide();
 					}
 					if(self.window.Cookie && self.window.Cookie.read('xstoken')){
 							self.close();

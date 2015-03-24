@@ -5,19 +5,21 @@ mainApp.controller("expiredController", function ($scope) {
 			Expired.load();
 			$("#sellExpired").click(function () {
 				Main.sell(Model.selectedExpired,0,function () {
-					Expired.load(null,function () {
-						Main.status();
-						Main.load();
-					});
+					Expired.load(false);
 				});
 			});
 			$("#refreshExpired").click(function () {
-				Expired.load();
-				Main.clearSelected(Model.selectedExpired);
-				Main.bind();
+				if($(this).attr('data-run') === "true") {
+					return $(this).attr('data-stop',true);
+				}else{
+					Expired.load(true);
+				}
 			});
 		},
-		load: function (similar,callback) {
+		load: function (loadSimilar) {
+			loadSimilar = loadSimilar || false;
+			Main.clearSelected(Model.selectedExpired);
+
 			$.ajax({
 				url: Main.url('mail'),
 				data: {
@@ -27,8 +29,7 @@ mainApp.controller("expiredController", function ($scope) {
 				type: 'POST',
 				success: function(data) {
 					if (data.error) {
-						//todo 失败返回信息
-						return;
+						return Main.closeWin(err);
 					}
 
 					var mail = data.mail.newMessages;
@@ -45,7 +46,9 @@ mainApp.controller("expiredController", function ($scope) {
 									},
 									quantity: mail[x].attachments[0].tooltipParams.quantity || 1,
 									buyout: Main.formatMoney(mail[x].winPrice),
+									pinyin: PinYin.to(mail[x].attachments[0].name),
 									status: mail[x].mailType,
+									sourceType: 3,
 									time: Math.floor(mail[x].timeToDelete/1000/3600/24)
 								});
 								break;
@@ -56,6 +59,7 @@ mainApp.controller("expiredController", function ($scope) {
 										id: mail[x].about.id
 									},
 									quantity: mail[x].about.tooltipParams.quantity || 1,
+									pinyin: PinYin.to(mail[x].about.name),
 									buyout: Main.formatMoney(mail[x].winPrice),
 									status: mail[x].mailType,
 									time: Math.floor(mail[x].timeToDelete/1000/3600/24)
@@ -63,7 +67,25 @@ mainApp.controller("expiredController", function ($scope) {
 								break;
 						}
 					}
-					if(callback) callback();
+
+					if(Model.config.updateSimilar || loadSimilar){
+						Main.similar(Model.expired, 0, false, function () {
+							if($('#refreshExpired').attr('data-stop') === 'true'){
+									$("#refreshExpired").text("刷新");
+									$("#refreshExpired").attr('data-run',false);
+									$("#refreshExpired").removeAttr('data-stop');
+									return true;
+								}
+						});
+					}else{
+						$("#refreshExpired").text("刷新");
+						$("#refreshExpired").attr('data-run',false);
+						Main.status();
+						Main.bind();
+					}
+				},
+				beforeSend: function () {
+					Main.status("邮箱更新中...");
 				}
 					
 			});

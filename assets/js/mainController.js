@@ -144,11 +144,11 @@ mainApp.controller("mainController", function ($scope) {
 				amount: amount
 			};
 		},
-		similar: function (items, index, cache, callback) {
+		similar: function (items, index, cache, suspend) {
 			if(index >= items.length) {
 				return Main.status();
 			};
-			if(callback && callback()) {
+			if(suspend && suspend()) {
 				return Main.status();
 			};
 			$.ajax({
@@ -180,11 +180,11 @@ mainApp.controller("mainController", function ($scope) {
 					Main.bind();
 
 					setTimeout(function () {
-						Main.similar(items, index+1, false, callback);
+						Main.similar(items, index+1, false, suspend);
 					}, 100);
 				},
 				beforeSend: function () {
-					Main.status("价格查询中("+(index+1)+"/"+Model.package.length+")...");
+					Main.status("价格查询中("+(index+1)+"/"+items.length+")...");
 				}
 			});
 		},
@@ -222,7 +222,7 @@ mainApp.controller("mainController", function ($scope) {
 					data: {
 						itemId: item.name.id,
 						quantity: item.quantity || 1,
-						sourceType: 0,
+						sourceType: item.sourceType || 0,
 						duration: Model.config.duration,
 						stacks: item.stacks || 1,
 						buyout: item.buyout.amount,
@@ -275,6 +275,12 @@ mainApp.controller("mainController", function ($scope) {
 		},
 		clearSelected: function (model) {
 			model.splice(0, model.length);
+		},
+		closeWin: function (err) {
+			if(confirm("网络异常，请重新打开。点击确定将退出程序\nerror:"+err)){
+						var gui = require('nw.gui');
+						gui.Window.get().close(true);
+					}
 		}
 	}
 

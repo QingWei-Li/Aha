@@ -3,31 +3,24 @@ mainApp.controller("packageController", function ($scope) {
 	Package = {
 		init: function () {
 			Package.load();
-			//bind Event
+			
 			$("#sell").click(function () {
 				Main.sell(Model.selectedPackage,0,function () {
-					Package.load(false);
+					Package.load();
 				});
 			});
 			$("#refresh").click(function () {
 				if($(this).attr('data-run') === "true") {
 					return $(this).attr('data-stop',true);
 				}else{
-					Package.load(true, function () {
-								if($('#refresh').attr('data-stop') === 'true'){
-									$("#refresh").text("刷新");
-									$("#refresh").attr('data-run',false);
-									$("#refresh").removeAttr('data-stop');
-									return true;
-								}
-							});
+					Package.load(true);
 				}
-
-				Main.clearSelected(Model.selectedPackage);
 			});
 		},
-		load: function (loadSimilar, callback) {
+		load: function (loadSimilar) {
 			loadSimilar = loadSimilar || false;
+			Main.clearSelected(Model.selectedPackage);
+			
 			//if u're using '$http' will be able to get the data, I don't know why
 			$.ajax({
 				url: Main.url("create"),
@@ -39,7 +32,14 @@ mainApp.controller("packageController", function ($scope) {
 					Main.bind();
 
 					if(Model.config.updateSimilar || loadSimilar){
-						Main.similar(Model.package, 0, false, callback);
+						Main.similar(Model.package, 0, false, function () {
+							if($('#refresh').attr('data-stop') === 'true'){
+									$("#refresh").text("刷新");
+									$("#refresh").attr('data-run',false);
+									$("#refresh").removeAttr('data-stop');
+									return true;
+								}
+						});
 					}else{
 						$("#refresh").text("刷新");
 						$("#refresh").attr('data-run',false);
@@ -47,10 +47,7 @@ mainApp.controller("packageController", function ($scope) {
 					}
 				},
 				error: function (err) {
-					if(confirm("网络异常，请重新打开。点击确定将退出程序")){
-						var gui = require('nw.gui');
-						gui.Window.get().close(true);
-					}
+					return Main.closeWin(err);
 				},
 				beforeSend: function () {
 					$("#refresh").text("暂停");
