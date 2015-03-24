@@ -1,6 +1,6 @@
 {
   "name": "Aha",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The World of warcraft auction house client(chinese)",
   "main": "Gulpfile.js",
   "dependencies": {
@@ -20,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/QingWei-Li/Aha/issues"
   },
-  "homepage": "https://github.com/QingWei-Li/Aha"
+  "homepage": "https://github.com/QingWei-Li/Aha",
+  "private": true
 }

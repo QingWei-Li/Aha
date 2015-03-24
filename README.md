@@ -28,7 +28,8 @@ todo:
 
 
 download link:
-v0.0.1 86x http://cinwell.qiniudn.com/aha.0.0.1.zip
+86x http://cinwell.qiniudn.com/aha.0.0.1.zip
 
+-------------------
 仅供学习交流
 待更
