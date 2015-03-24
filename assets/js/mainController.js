@@ -211,8 +211,7 @@ mainApp.controller("mainController", function ($scope) {
 		sell: function (items, index, callback) {
 			index = index || 0;
 			if(index >= items.length) {
-				callback();
-				return;
+				return callback();
 			};
 			var item = items[index];
 			
