@@ -89,9 +89,6 @@ mainApp.controller("expiredController", function ($scope) {
 				}
 					
 			});
-		},
-		bind: function () {
-			
 		}
 	}
 })
